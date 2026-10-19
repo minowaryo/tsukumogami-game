@@ -1,0 +1,172 @@
+# Character Bible — 黒電話（kurodenwa）
+# STATUS: 案（DRAFT）。共通設定・禁止要素・プロンプトの組み立て順は _common.yaml を参照
+
+meta:
+  id: kurodenwa
+  version: 0.1.0
+  status: draft
+  updated: 2026-10-19
+  open_questions:
+    - Lv4 の性別
+    - 若い層・海外にダイヤル式電話がどこまで通じるか（チュートリアルで「回す」操作を教えれば遊びになる）
+
+identity:
+  object: ダイヤル式の黒電話（ベークライト、カールコード、レースの敷物つき電話台）
+  era: 昭和50年代 — 家にあった最後の固定電話
+  location_of_encounter: 廊下の電話台。電話線は抜かれ、解約済み
+  personality: おしゃべり好き。でも肝心なことになると黙ってしまう
+  backstory_hook: >
+    遠くに住む家族からの電話を、毎週日曜に待っていた家族がいた。
+    最後にかかってきた一本に、誰も出られなかった。電話はその伝言をまだ預かっている。
+  role_in_story: 過去からの電話＝家の記憶の伝言役。昔の番号を探す謎解き
+  reaction_loop:
+    - step: 気配
+      trigger: 廊下を通る
+      reaction: 線が抜けているのに、受話器がかすかにカタッと鳴る
+    - step: 気のせい？
+      trigger: 埃を払って磨く
+      reaction: その夜、一度だけ「チン」とベルが鳴る
+    - step: 確かめる
+      trigger: 鳴った時刻に電話の前で待つ／受話器を取る
+      reaction: ノイズの奥に誰かの気配。黒い艶のハイライトが2つの目になる（Lv1）
+    - step: 確信
+      trigger: 家の中で見つけた昔の番号（手紙・電話帳）をダイヤルする
+      reaction: カールコードを揺らし、受話器を持ち上げてお辞儀する（Lv2）
+    - step: 顕現
+      trigger: 隠し条件：毎週日曜の同じ時刻に受話器を取る
+      reaction: 電話台に腰かけて話す人影（Lv3）→ 受話器を置いて振り向く（Lv4）。最後の伝言が届く
+
+reveal:                        # _common.yaml reveal_pattern に従う
+  face_hiding_reason: >-
+    声だけの関係が心地いい。顔を見せたら、待つ側の寂しさが伝わってしまう
+  stages:
+    - level: 0
+      story: 電話線は抜かれ、解約済み
+      question: なぜ受話器が鳴る？
+    - level: 1
+      personality: おしゃべり（ベルの鳴り方で機嫌が分かる）
+      story: 毎晩、決まった時刻に一度だけベルが鳴る
+      question: 誰からの電話？
+    - level: 2
+      personality: 好き＝日曜の夜・長電話／嫌い＝鳴っているのに無視されること
+      line: 「もしもし？」
+      story: 電話台の引き出しに番号のメモ（他の道具の持ち主の番号も混じっている）
+      question: この番号の先には誰がいる？
+    - level: 3
+      personality: 建前＝明るく雑談ばかりして、肝心な話になると黙る
+      story: 最後の電話は遠くに住む家族からだった。誰も出られず、電話は伝言を預かったまま
+      question: 伝言の中身は？
+    - level: 4
+      personality: 本音＝待つ側の寂しさを、誰にも言えなかった
+      story: 預かっていた伝言が届く
+  teasers:
+    - 受話器越しの声（顔より先にボイス）
+    - コードを指に巻きつける手だけ
+    - 廊下のガラス戸に映る横顔
+  yokai_side: 「誰も出てくれない」— 鳴らし続けても届かない声への恨み
+
+anchors:
+  palette:
+    bakelite: { hex: "#111111", name: 漆黒,     role: 本体 / 髪色・ワンピース・ジャケット }
+    chrome:   { hex: "#C0C4C8", name: 銀,       role: ダイヤルの指止め / ボタン・イヤリング }
+    numeral:  { hex: "#F4F1EA", name: 数字盤の白, role: 数字盤 / ブラウス・襟 }
+    lace:     { hex: "#3E6B5A", name: 深緑,     role: 電話台の敷物 / スカーフ・差し色 }
+  motifs:
+    - name: カールコード
+      lv2: しっぽ／手の代わりに揺れる
+      lv4: 巻き髪の房、くるくるした髪紐・イヤリング
+    - name: ダイヤル
+      lv4: 円形のブローチ・髪飾り（数字の穴が並ぶ）、瞳の放射状のハイライト
+    - name: 受話器
+      lv2: 帽子のように持ち上げてお辞儀
+      lv4: 手に持つ／肩に挟む小道具
+    - name: ベル
+      lv4: 鈴の耳飾り（話すときに鳴る）
+  eyes: { shape: ぱっちりした丸い目, color: 深緑, highlight: ダイヤルの放射線 }
+  signature_gesture: 受話器のコードを指にくるくる巻きつける
+
+stages:
+  - level: 0
+    name: ただの黒電話
+    concept: 廊下の電話台の黒電話。線は抜かれている
+    prompt: >-
+      no humans, still life, object focus, black rotary phone, bakelite, coiled cord, unplugged phone line,
+      on wooden telephone stand, lace doily, hallway, old japanese house, dust, dim light, faint glow
+    negative_sets: [base, object]
+    negative: "face, eyes"
+    qc: { human_face: false }
+    approved: []
+
+  - level: 1
+    name: 宿り
+    concept: 黒い艶のハイライトが2つの丸い目になる。受話器の曲線が笑った口に見える
+    prompt: >-
+      no humans, living object, black rotary phone, glossy highlights as two simple eyes,
+      handset curve like a smile, blush stickers, coiled cord, on wooden telephone stand, lace doily,
+      hallway, warm light
+    negative_sets: [base, object]
+    must_not:
+      - ダイヤルを一つの大きな目にする（一つ目は不気味。妖怪ルートの記号とも重なる）
+    qc: { human_face: false }
+    approved: []
+
+  - level: 2
+    name: 芽生え
+    concept: カールコードを揺らし、受話器を帽子のように持ち上げてお辞儀する
+    prompt: >-
+      no humans, living object, black rotary phone, handset lifting like a hat, bowing,
+      coiled cord swinging like a tail, glossy simple eyes, happy, ringing bell effect, sparkles,
+      musical notes, wooden telephone stand, hallway
+    negative_sets: [base, object]
+    negative: "tangled cords, black smoke"     # yokai-route symbols
+    qc: { human_face: false }
+    approved: []
+
+  - level: 3
+    name: 化身
+    concept: 電話台の横に腰かけ、受話器を耳に当てて話す半透明の人影。顔は受話器と髪で隠れる
+    prompt: >-
+      {subject}, sitting beside telephone stand, holding handset to ear, face hidden by handset and hair,
+      side view, looking down, translucent body, ghostly glowing outline, coiled cord wrapped around finger,
+      black dress, white collar, hallway, old japanese house, evening light, full body
+    subject_default: ambiguous
+    negative_sets: [base, adult, face_hidden, no_kintsugi]
+    qc: { human_face: false }
+    approved: []
+
+  - level: 4
+    name: 顕現
+    concept: 受話器を置いて振り向く、おしゃべり好き。コードを指に巻く癖
+    prompt: >-
+      {subject}, black hair, curly hair lock, coiled-cord hair tie, bell earrings, green eyes,
+      round eyes, radial dial-pattern eye highlights, black dress or black jacket, white collar,
+      rotary-dial shaped brooch, deep green scarf, twirling coiled phone cord around finger,
+      looking at viewer, open mouth smile, beside black rotary phone, hallway, upper body
+    subject_options: [female, male]
+    negative_sets: [base, adult, no_kintsugi]
+    qc: { human_face: true }
+    approved: []
+
+yokai_branch:
+  trigger: 鳴っているのに出ない、を繰り返す
+  stages:
+    - id: Y1
+      name: 無言電話（むごんでんわ）
+      concept: >-
+        夜中に鳴り続け、出ると無言、または自分の声が聞こえる。
+        コードが廊下中に伸びて絡まり、受話器から黒い影が漏れる
+      prompt: >-
+        no humans, haunted black rotary phone, ringing at night, coiled cords stretching and tangling across hallway,
+        black smoke leaking from handset, eerie, lonely, kowakawaii, moonlight, old japanese house
+      negative_sets: [base, object]
+      must_not:
+        - 実在の都市伝説（メリーさん等）の言い回しをそのまま使う
+      qc: { human_face: false }
+      approved: []
+    - id: Y-return
+      name: 金継ぎの姿
+      concept: Lv4 と同じ姿で、ダイヤルのブローチのひびに金継ぎの線が残る
+      prompt_from: stages[level=4]
+      prompt_add: "kintsugi, gold repair lines on brooch"
+      negative_sets_remove: [no_kintsugi]
+      approved: []

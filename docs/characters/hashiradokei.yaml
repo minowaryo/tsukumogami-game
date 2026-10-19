@@ -1,0 +1,168 @@
+# Character Bible — 柱時計（hashiradokei）
+# STATUS: 案（DRAFT）。共通設定・禁止要素・プロンプトの組み立て順は _common.yaml を参照
+
+meta:
+  id: hashiradokei
+  version: 0.1.0
+  status: draft
+  updated: 2026-10-19
+  open_questions:
+    - Lv4 の性別（_common.yaml subjects）
+    - 物語の軸（九十九年目の家）での役割をどこまで背負わせるか（家の付喪神＝座敷わらしとの関係）
+
+identity:
+  object: 振り子式の柱時計（ゼンマイ式、文字盤にネジ穴が2つ）
+  era: 昭和2年（1927）— 家が建った年の新築祝いの品。家と同じ99年を刻んできた
+  location_of_encounter: 居間の柱。止まったまま
+  personality: 几帳面で時間に厳しい家の番人。口うるさいが、家族の出来事を全部覚えている
+  backstory_hook: >
+    ある日を境に止まったまま、誰にも巻かれなくなった。止まった時刻には意味がある。
+    動き出すと「百年目までの残り日数」を告げる＝物語全体のタイマー役。
+  role_in_story: 百年目のカウントダウン。家の歴史の語り部
+  reaction_loop:
+    - step: 気配
+      trigger: 居間に入る
+      reaction: 止まっているはずの振り子がわずかに揺れている
+    - step: 気のせい？
+      trigger: ネジを巻く
+      reaction: 3時17分など中途半端な時刻に一度だけ「ボーン」と鳴り、また止まる
+    - step: 確かめる
+      trigger: 針をその時刻に合わせる／毎日ネジを巻く（ログインボーナスと相性が良い）
+      reaction: 文字盤の2つのネジ穴がまばたきする（Lv1）
+    - step: 確信
+      trigger: 7日連続で正しい時刻を刻ませる
+      reaction: 嬉しいと振り子が尻尾のように大きく振れる（Lv2）
+    - step: 顕現
+      trigger: 止まった時刻の出来事（家の記憶）を知る
+      reaction: 時計を巻く後ろ姿が現れ（Lv3）、振り返る（Lv4）。百年目までの日数を告げる
+
+reveal:                        # _common.yaml reveal_pattern に従う
+  face_hiding_reason: >-
+    止まっていた日に、家族の大事な時を刻めなかった。文字どおり「顔向けできない」
+  stages:
+    - level: 0
+      story: 家の中で、この時計だけが止まっている
+      question: なぜ時計だけ止まっている？
+    - level: 1
+      personality: 時間に厳しい（ログインが遅いと不機嫌な目になる）
+      story: 止まった時刻「3時17分」
+      question: 3時17分に何があった？
+    - level: 2
+      personality: 好き＝決まった時刻の習慣・ネジ巻き／嫌い＝針を乱暴に回されること
+      line: 「…遅い」
+      story: 時計の横の柱に刻まれた家族の背丈の傷。日付がある年で途切れている
+      question: なぜ背丈の記録が途切れた？
+    - level: 3
+      personality: 建前＝厳格な家の番人。「時間です」としか言わない
+      story: 3時17分は、家族が慌てて家を出た夜の時刻。時計はその瞬間に止まり、帰ってきた家族に時を告げられなかった
+      question: その後、家族はどうなった？／なぜ顔を見せない？
+    - level: 4
+      personality: 本音＝大事な時を刻めなかった自分を許せない。本当は家族と同じ時間を過ごしたかった
+      story: 背丈の傷の続きを主人公から刻み直す。百年目までの残り日数を告げる
+  teasers:
+    - 振り子のガラスに一瞬だけ映る顔
+    - 懐中時計の鎖に指をかける手だけ
+  yokai_side: 「どうせ誰も時間なんて気にしない」— 家族に置いていかれた時間への恨み
+
+anchors:
+  palette:
+    ameiro:  { hex: "#7B4A26", name: 飴色,     role: 木枠 / ベスト・コート }
+    brass:   { hex: "#C49A3C", name: 真鍮,     role: 振り子・ネジ巻き鍵 / 懐中時計の鎖・ボタン }
+    dial:    { hex: "#F1ECE0", name: 文字盤の白, role: 文字盤 / シャツ }
+    sumi:    { hex: "#1C1C1C", name: 墨,       role: ローマ数字・針 / 髪色・ネクタイ }
+  motifs:
+    - name: 2つのネジ穴
+      lv1: 目
+      lv4: 丸眼鏡、または瞳の中の小さな2つの光
+    - name: 振り子
+      lv2: 尻尾のように振れる
+      lv4: 胸元の振り子形ペンダント／懐中時計の鎖
+    - name: ローマ数字の文字盤
+      lv4: 瞳のハイライトに文字盤の目盛り、ベストの刺繍
+    - name: ネジ巻き鍵
+      lv4: ネクタイピン／髪飾り
+  eyes: { shape: 切れ長でやや鋭い, color: 琥珀, highlight: 文字盤の目盛り }
+  signature_gesture: 懐中時計の鎖に指をかけて時間を確かめる
+
+stages:
+  - level: 0
+    name: ただの柱時計
+    concept: 止まったままの柱時計。振り子がかすかに揺れている
+    prompt: >-
+      no humans, still life, object focus, antique pendulum wall clock, wooden case, roman numerals,
+      stopped clock, hanging on wooden pillar, japanese living room, tatami, dusty, dim light, faint glow
+    negative_sets: [base, object]
+    negative: "face, eyes"
+    qc: { human_face: false }
+    approved: []
+
+  - level: 1
+    name: 宿り
+    concept: 文字盤の2つのネジ穴が目になり、まばたきする。針が眉のように動く
+    prompt: >-
+      no humans, living object, antique pendulum wall clock, wooden case, roman numerals,
+      two winding holes on clock face as simple eyes, clock hands like eyebrows, surprised, blush stickers,
+      hanging on wooden pillar, japanese living room, warm light
+    negative_sets: [base, object]
+    must_not:
+      - 文字盤に人の顔を描き足す（目はネジ穴だけ）
+    qc: { human_face: false }
+    approved: []
+
+  - level: 2
+    name: 芽生え
+    concept: 振り子が尻尾のように振れ、時計全体が柱の上で揺れて喜ぶ。鐘の音が声
+    prompt: >-
+      no humans, living object, antique pendulum wall clock, pendulum swinging like a wagging tail,
+      motion lines, winding holes as simple eyes, happy, sparkles, musical chime effect,
+      hanging on wooden pillar, japanese living room, morning light
+    negative_sets: [base, object]
+    negative: "broken glass, numbers falling"     # yokai-route symbols
+    qc: { human_face: false }
+    approved: []
+
+  - level: 3
+    name: 化身
+    concept: 時計のネジを巻く半透明の人影を後ろから見る。顔は見えない
+    prompt: >-
+      {subject}, from behind, back view, translucent body, ghostly glowing outline,
+      winding an antique pendulum wall clock with a brass key, vest, white shirt sleeves,
+      black hair, pocket watch chain, japanese living room, dusk light, upper body
+    subject_default: ambiguous
+    negative_sets: [base, adult, face_hidden, no_kintsugi]
+    qc: { human_face: false }
+    approved: []
+
+  - level: 4
+    name: 顕現
+    concept: 振り返って懐中時計を確かめる、几帳面な家の番人
+    prompt: >-
+      {subject}, black hair, neat hair, round glasses, amber eyes, sharp eyes,
+      clock-dial shaped eye highlights, white shirt, amber-brown vest with roman numeral embroidery,
+      black necktie, winding-key tie pin, pendulum pendant, holding pocket watch, looking at viewer,
+      slight smile, standing beside antique pendulum wall clock, japanese living room, upper body
+    subject_options: [female, male]
+    negative_sets: [base, adult, no_kintsugi]
+    qc: { human_face: true }
+    approved: []
+
+yokai_branch:
+  trigger: ネジを巻かずに放置／針を乱暴に逆回しする
+  stages:
+    - id: Y1
+      name: 刻狂い（ときぐるい）
+      concept: 夜中に13回鳴る。文字盤の数字が落ち、針が逆回りする。ゲーム内の時計も狂う
+      prompt: >-
+        no humans, haunted antique pendulum wall clock, clock hands spinning backwards,
+        roman numerals falling off, cracked clock glass, night, moonlight, eerie,
+        lonely, kowakawaii, japanese living room
+      negative_sets: [base, object]
+      qc: { human_face: false }
+      approved: []
+    - id: Y-return
+      name: 金継ぎの姿
+      concept: Lv4 と同じ姿で、丸眼鏡のレンズのひびに金継ぎの線が残る
+      prompt_from: stages[level=4]
+      prompt_add: "kintsugi, gold repair lines on glasses lens"
+      negative_sets_remove: [no_kintsugi]
+      approved: []

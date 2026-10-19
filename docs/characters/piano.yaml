@@ -1,0 +1,173 @@
+# Character Bible — アップライトピアノ（piano）
+# STATUS: 案（DRAFT）。共通設定・禁止要素・プロンプトの組み立て順は _common.yaml を参照
+
+meta:
+  id: piano
+  version: 0.1.0
+  status: draft
+  updated: 2026-10-19
+  open_questions:
+    - Lv4 の性別
+    - 「最後まで弾かれなかった曲」をオリジナル曲にするか（作曲の外注コスト）
+
+identity:
+  object: 昭和初期のアップライトピアノ（黒漆、真鍮の燭台、臙脂の鍵盤カバー）
+  era: 昭和初期 — 洋間のある家として、この家の娘のために買われた
+  location_of_encounter: 普段は閉め切られた洋間。カバーがかかったまま
+  personality: 完璧主義で少し気難しい。音程のずれが許せない。褒められると急におとなしくなる
+  backstory_hook: >
+    娘が練習していた曲は、最後の数小節だけ一度も弾かれないまま終わった。
+    ピアノはその続きを、いつか誰かと弾きたいと思っている。
+  role_in_story: 音でしか話さない段階が長い。プレイヤーとの「音の会話」が遊びになる
+  reaction_loop:
+    - step: 気配
+      trigger: 洋間に入る
+      reaction: 鍵盤の埃に、誰かが触れたような細い跡がある
+    - step: 気のせい？
+      trigger: 調律する（調律ミニゲーム）
+      reaction: 毎回、同じ一音だけ違う音で鳴る
+    - step: 確かめる
+      trigger: その音から始まるメロディを探して弾く
+      reaction: 譜面台の楽譜の音符が集まって顔になる（Lv1）
+    - step: 確信
+      trigger: 毎日少しずつ弾く
+      reaction: 弾いた音に鍵盤が勝手に「返事」をする。燭台が揺れる（Lv2）
+    - step: 顕現
+      trigger: 曲を最後まで弾く（隠し条件：最後の数小節は連弾でしか弾けない）
+      reaction: 隣に連弾する人影が座り（Lv3）、弾き終えて振り向く（Lv4）
+
+reveal:                        # _common.yaml reveal_pattern に従う
+  face_hiding_reason: >-
+    弾き手は曲の途中で振り向かない。最後の小節を弾き終えるまで振り向けない
+  stages:
+    - level: 0
+      story: 閉め切った洋間で、鍵盤の埃に細い指の跡がある
+      question: 誰が触った？
+    - level: 1
+      personality: 音程に厳しい（調律がずれると音符の顔がしかめっ面になる）
+      story: 調律しても、いつも同じ一音だけ違う音で鳴る
+      question: この音から始まる曲は？
+    - level: 2
+      personality: 好き＝丁寧なタッチ・褒め言葉／嫌い＝乱暴な打鍵・雑な調律
+      line: （言葉ではなく音で返事をする）
+      story: 楽譜の余白に鉛筆の書き込み「ここから先は二人で」
+      question: 二人って誰？
+    - level: 3
+      personality: 建前＝気難しい先生。プレイヤーの練習を厳しく見る
+      story: 娘はこの曲を誰かと連弾する約束をしていたが、その日は来なかった（来なかったのが相手か娘かはまだ分からない）
+      question: 約束の相手は誰？
+    - level: 4
+      personality: 本音＝弾き手を待たせたまま終わった自分の音が嫌いだった。最後の小節を誰かと弾きたかった
+      story: 約束の結末が明かされ、曲が完成する
+  teasers:
+    - 演奏中の後ろ姿で揺れる髪
+    - 鍵盤の上の手だけ
+    - 黒漆の天板にぼんやり映る横顔
+  yokai_side: 「どうせ誰も最後まで聴かない」— 途中で終わらされた音への恨み
+
+anchors:
+  palette:
+    urushi: { hex: "#141414", name: 黒漆,   role: 本体 / 髪色・ジャケット }
+    ivory:  { hex: "#F2EBDD", name: 象牙,   role: 白鍵 / ブラウス・シャツ }
+    brass:  { hex: "#B08D57", name: 真鍮,   role: 燭台・ペダル / ブローチ・髪飾り }
+    enji:   { hex: "#7A1F2B", name: 臙脂,   role: 鍵盤カバー / リボン・スカーフ（差し色） }
+  motifs:
+    - name: 白鍵と黒鍵
+      lv4: リボン・ネクタイ・裾の白黒の縞（鍵盤の並び）
+    - name: 真鍮の燭台
+      lv2: 腕のように揺れる
+      lv4: 燭台の形のブローチ／髪飾り
+    - name: 臙脂の鍵盤カバー
+      lv4: ベルベットのリボン・スカーフ
+    - name: 楽譜の音符
+      lv1: 顔を作る
+      lv4: 瞳のハイライトが八分音符
+  eyes: { shape: 長いまつげの切れ長, color: 臙脂寄りの茶, highlight: 八分音符 }
+  signature_gesture: 鍵盤に指を置く前に、必ず一呼吸おく
+
+stages:
+  - level: 0
+    name: ただのピアノ
+    concept: カバーのかかったピアノ。鍵盤の埃に細い跡
+    prompt: >-
+      no humans, still life, object focus, antique upright piano, black lacquer, brass candle holders,
+      red velvet key cover, dust, western-style room in old japanese house, curtains, dim light, faint glow
+    negative_sets: [base, object]
+    negative: "face, eyes"
+    qc: { human_face: false }
+    approved: []
+
+  - level: 1
+    name: 宿り
+    concept: 譜面台の楽譜の音符が集まって、にっこりした顔の形になる
+    prompt: >-
+      no humans, living object, antique upright piano, sheet music on music stand,
+      musical notes forming a smiling face on the sheet music, floating musical notes,
+      brass candle holders, warm light, western-style room
+    negative_sets: [base, object]
+    must_not:
+      - 鍵盤を口や歯に見立てる（ピアノの顔として最も不気味になりやすい）
+    qc: { human_face: false }
+    approved: []
+
+  - level: 2
+    name: 芽生え
+    concept: 鍵盤が勝手に沈んで返事をし、燭台が手を振るように揺れる
+    prompt: >-
+      no humans, living object, antique upright piano, piano keys pressing down by themselves,
+      brass candle holders swaying like waving arms, musical notes as simple eyes on sheet music,
+      happy, floating musical notes, sparkles, western-style room, afternoon light
+    negative_sets: [base, object]
+    negative: "shadow hands, scattered sheet music"     # yokai-route symbols
+    qc: { human_face: false }
+    approved: []
+
+  - level: 3
+    name: 化身
+    concept: ピアノの前に、半透明の人影が隣に座って連弾している。後ろ姿で顔は見えない
+    prompt: >-
+      {subject}, from behind, back view, translucent body, ghostly glowing outline,
+      sitting at antique upright piano, playing piano, four hands, piano bench,
+      long black hair, ivory blouse, red velvet ribbon, western-style room, sunset light through curtains
+    subject_default: ambiguous
+    negative_sets: [base, adult, face_hidden, no_kintsugi]
+    qc: { human_face: false }
+    approved: []
+
+  - level: 4
+    name: 顕現
+    concept: 弾き終えて振り向く。気難しいが、褒められると照れる
+    prompt: >-
+      {subject}, long black hair, brass candlestick hair ornament, reddish-brown eyes, long eyelashes,
+      eighth-note shaped eye highlights, ivory blouse, black jacket,
+      piano-key striped ribbon, red velvet scarf, sitting at antique upright piano, looking back at viewer,
+      slight blush, western-style room, upper body
+    subject_options: [female, male]
+    negative_sets: [base, adult, no_kintsugi]
+    qc: { human_face: true }
+    approved: []
+
+yokai_branch:
+  trigger: 調律しないまま放置／カバーをかけっぱなし／湿気
+  stages:
+    - id: Y1
+      name: 音狂い（ねぐるい）
+      concept: >-
+        夜中に誰もいない洋間で鳴る、狂った音程の曲。楽譜が舞い、鍵盤の上を影の手が走る
+        （学校の怪談の「勝手に鳴るピアノ」）
+      prompt: >-
+        no humans, haunted antique upright piano, playing by itself at night, sheet music flying,
+        shadow hands over the keys, moonlight through curtains, eerie, lonely, kowakawaii, western-style room
+      negative_sets: [base]
+      negative: "teeth, mouth, 1girl, 1boy"
+      must_not:
+        - 鍵盤を歯にする表現（妖怪ルートでも全年齢の範囲に収めるため）
+      qc: { human_face: false }
+      approved: []
+    - id: Y-return
+      name: 金継ぎの姿
+      concept: Lv4 と同じ姿で、燭台の髪飾りに金継ぎの線が残る（割れた象牙の鍵を継いだ跡）
+      prompt_from: stages[level=4]
+      prompt_add: "kintsugi, gold repair lines on hair ornament"
+      negative_sets_remove: [no_kintsugi]
+      approved: []

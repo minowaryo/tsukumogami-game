@@ -1,0 +1,173 @@
+# Character Bible — 提灯（chochin）
+# STATUS: 案（DRAFT）。共通設定・禁止要素・プロンプトの組み立て順は _common.yaml を参照
+
+meta:
+  id: chochin
+  version: 0.1.0
+  status: draft
+  updated: 2026-10-19
+  open_questions:
+    - Lv4 の性別
+    - お盆提灯（先祖を迎える灯）にするか、家紋入りの弓張り提灯（夜道の迎え）にするか。下書きは後者
+
+identity:
+  object: 家紋入りの弓張り提灯（和紙の火袋、竹の横骨、朱の房）
+  era: 明治〜大正 — この家が建つ前から一族が使っていた、いちばん古い道具
+  location_of_encounter: 蔵の奥。畳まれて木箱に入っている
+  personality: 明るい世話焼き。夜道の案内人なのに、暗いところが少し苦手
+  backstory_hook: >
+    帰りの遅い家族を、門の前で灯して待つための提灯だった。
+    家の誰が、いつ、どこから帰ってきたかを全部覚えている。
+  role_in_story: >-
+    「灯」の案内役。他の道具の気配のある場所を照らして教える（探索の手がかり）。
+    道具が目覚めるたびに家にともる灯と最も相性が良い
+  reaction_loop:
+    - step: 気配
+      trigger: 蔵の暗がりを進む
+      reaction: 火を入れていないのに、木箱の隙間が一瞬ぽっと明るくなる
+    - step: 気のせい？
+      trigger: 破れた火袋を和紙で繕う
+      reaction: 夜、手に取るとほんのり温かい
+    - step: 確かめる
+      trigger: 灯す場所を変える（玄関・仏間・縁側・門）
+      reaction: 門で灯すと明るさが増し、火袋に灯りの影で顔が浮かぶ（Lv1）
+    - step: 確信
+      trigger: 毎晩、門で灯す
+      reaction: ふわりと浮かび、房を揺らして家の中を先導する（Lv2）
+    - step: 顕現
+      trigger: 隠し条件：帰りの遅い誰か（他の付喪神）を門で迎える
+      reaction: 提灯を下げた人影の手と裾だけが灯りに浮かび（Lv3）、灯りを掲げると顔が見える（Lv4）
+
+reveal:                        # _common.yaml reveal_pattern に従う
+  face_hiding_reason: >-
+    いつも迎える側だった。迎えられる側になるのが怖い
+  stages:
+    - level: 0
+      story: 蔵の木箱から、火もないのに灯りが漏れる
+      question: なぜ光る？
+    - level: 1
+      personality: 世話焼き（主人公の足元を照らそうとする）
+      story: 火袋の家紋が、今の家の表札の紋と違う
+      question: これは誰の家の紋？
+    - level: 2
+      personality: 好き＝門で灯されること・夜の散歩／嫌い＝真っ暗な蔵・破れたままでいること
+      line: 「こっち」
+      story: 他の道具の気配を照らして教える（他の5体との出会いに直結する）
+      question: この家に来る前は、どこにいた？
+    - level: 3
+      personality: 建前＝案内役に徹する。自分のことを聞かれると、灯りを揺らしてはぐらかす
+      story: この家が建つ前の一族の話。帰らなかった人を門で待ち続けた夜
+      question: 誰を待っていた？
+    - level: 4
+      personality: 本音＝迎える側でいれば、置いていかれずに済むと思っていた
+      story: 一族とこの家の始まり。家の付喪神（座敷わらし）の物語の入口になる
+  teasers:
+    - 灯りの縁にかかる着物の裾
+    - 提灯を持つ手だけ
+    - 障子に映る影
+  yokai_side: 「誰も帰ってこない」— 灯し続けても迎える相手がいない寂しさ
+
+anchors:
+  palette:
+    washi:  { hex: "#F3E9D2", name: 和紙,   role: 火袋 / 着物の地色 }
+    akari:  { hex: "#F2A541", name: 灯りの橙, role: 光 / 瞳・帯の差し色 }
+    sumi:   { hex: "#222222", name: 墨,     role: 家紋・弓張りの竹 / 髪色・羽織 }
+    shu:    { hex: "#B83A2E", name: 朱,     role: 房 / 髪飾りの房・帯締め }
+  motifs:
+    - name: 家紋
+      lv4: 羽織の背紋・帯留め
+    - name: 竹の横骨（蛇腹）
+      lv4: 着物・帯の段々の横縞
+    - name: 朱の房
+      lv2: 手の代わりに揺れる
+      lv4: 髪飾りの房／耳飾り
+    - name: 灯り
+      lv1: 光と影で顔を作る
+      lv4: 瞳の中の暖かい光
+  eyes: { shape: 丸く垂れ気味の優しい目, color: 橙の琥珀, highlight: 灯火 }
+  signature_gesture: 提灯を少し掲げて相手の足元を照らす
+
+stages:
+  - level: 0
+    name: ただの提灯
+    concept: 蔵の木箱に畳まれた古い提灯。隙間がかすかに明るい
+    prompt: >-
+      no humans, still life, object focus, folded japanese paper lantern, chouchin, family crest,
+      in wooden box, old storehouse, kura, darkness, dust, faint warm glow leaking from box
+    negative_sets: [base, object]
+    negative: "face, eyes"
+    qc: { human_face: false }
+    approved: []
+
+  - level: 1
+    name: 宿り
+    concept: 灯った火袋に、光と影で柔らかな顔が浮かぶ（影絵のような2Dの顔）
+    prompt: >-
+      no humans, living object, lit japanese paper lantern, chouchin, family crest,
+      soft shadow face on the paper, simple eyes made of light, gentle smile, warm glow,
+      held on bamboo bow handle, night, old japanese house gate
+    negative_sets: [base, object]
+    must_not:
+      - 裂けた口・一つ目・長い舌（伝承の提灯お化け＝妖怪ルート専用の記号）
+      - 下からのライティングで顔を照らす構図（懐中電灯の怪談になる）
+    qc: { human_face: false }
+    approved: []
+
+  - level: 2
+    name: 芽生え
+    concept: ふわりと浮いて、朱の房を手のように揺らしながら家の中を先導する
+    prompt: >-
+      no humans, living object, floating japanese paper lantern, chouchin, red tassel waving like a hand,
+      simple eyes made of light, happy, sparkles, warm light trail, night, old japanese house corridor
+    negative_sets: [base, object]
+    negative: "one eye, split mouth, long tongue, torn paper, hitodama"     # yokai-route / ghost symbols
+    qc: { human_face: false }
+    approved: []
+
+  - level: 3
+    name: 化身
+    concept: 提灯を下げた人影。灯りが届くのは手と着物の裾だけで、顔は暗がりの中
+    prompt: >-
+      {subject}, holding japanese paper lantern, lantern light illuminating only hands and kimono hem,
+      face in shadow, head out of light, translucent body, ghostly glowing outline,
+      washi-colored kimono, red tassel, standing at old japanese house gate, night, full body
+    subject_default: ambiguous
+    negative_sets: [base, adult, face_hidden, no_kintsugi]
+    must_not:
+      - 顔の部分を真っ黒に塗りつぶす（「無い」に見える）。暗がりに溶けている程度に
+    qc: { human_face: false }
+    approved: []
+
+  - level: 4
+    name: 顕現
+    concept: 提灯を少し掲げ、足元を照らしてくれる世話焼き
+    prompt: >-
+      {subject}, black hair, red tassel hair ornament, orange amber eyes, droopy eyes,
+      warm glowing eye highlights, washi-colored kimono with horizontal band pattern, black haori with family crest,
+      red obi cord, raising japanese paper lantern, warm light on face, looking at viewer, gentle smile,
+      old japanese house gate, night, upper body
+    subject_options: [female, male]
+    negative_sets: [base, adult, no_kintsugi]
+    qc: { human_face: true }
+    approved: []
+
+yokai_branch:
+  trigger: 破れたまま放置／何日も灯さない
+  stages:
+    - id: Y1
+      name: 提灯お化け
+      concept: 伝承どおり、破れ目が口のように裂けて一つ目が開き、舌を出す。灯りが青白い
+      prompt: >-
+        no humans, chouchin obake, torn paper lantern, one eye, split mouth, tongue out,
+        pale blue light, floating, night, old storehouse, eerie, lonely, kowakawaii
+      negative_sets: [base]
+      negative: "1girl, 1boy, sharp teeth, fangs, realistic"
+      qc: { human_face: false }
+      approved: []
+    - id: Y-return
+      name: 金継ぎの姿
+      concept: Lv4 と同じ姿で、提灯の破れを金箔の紙で繕った跡が光る（紙なので金継ぎではなく金の繕い）
+      prompt_from: stages[level=4]
+      prompt_add: "gold leaf patch on paper lantern, gold repair lines"
+      negative_sets_remove: [no_kintsugi]
+      approved: []

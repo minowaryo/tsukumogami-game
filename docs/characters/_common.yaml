@@ -1,0 +1,137 @@
+# Common settings shared by every Character Bible in docs/characters/
+#
+# STATUS: 案（DRAFT）
+# How a final prompt is composed (the generator script, once written, must follow this order):
+#   positive = generation.quality_prefix + generation.style_tags + stage.prompt   ({subject} is substituted)
+#   negative = union(negative_sets[name] for name in stage.negative_sets) + stage.negative
+#   {subject}: stage.subject_default (Lv3) or each of stage.subject_options (Lv4) -> subjects[...]
+#   Yokai "Y-return" stages: start from prompt_from (a stage in the same file), append prompt_add,
+#   and drop the sets listed in negative_sets_remove.
+
+meta:
+  version: 0.1.0
+  updated: 2026-10-19
+
+# ---------------------------------------------------------------------------
+# Hard rules — override everything in the per-character files
+# ---------------------------------------------------------------------------
+hard_rules:
+  - 全員ひと目で大人に見えるデザイン（結婚エンド・海外ストア審査のため）
+  - 全年齢向け。成人向け・流血・グロ表現なし。刃物を見る人に向けない
+  - 依代（よりしろ）方式：物が人に変形するのではなく、物に宿った魂が人の姿で出てくる
+  - 人体のパーツ（リアルな眼球・歯・唇・指・肌）を物に生やさない
+
+# ---------------------------------------------------------------------------
+# Stage design pattern — 全キャラ共通の段階の作り方
+# ---------------------------------------------------------------------------
+stage_pattern:
+  lv0: ただの物。かすかな「気配」（光・揺れ・音）だけ
+  lv1: >-
+    顔が浮かぶ。顔は「物にもともとある2つの丸」（レンズ、指穴、ネジ穴など）か、
+    物が映す・灯す2Dの像（光、影、音符など）で作る。後から描き足したような顔にしない
+  lv2: 物の部品（紐、コード、振り子、刃など）が手足の代わりに動く。人の手足は生やさない
+  lv3: >-
+    魂が人の姿で出てくるが、その物を通してしか見えない（写真の中、鏡越し、後ろ姿、灯りの外など）。
+    顔は「隠す」。顔が「無い」（のっぺらぼう）表現は怖くなるので禁止
+  lv4: 顔が見える実体化した大人の姿。物のモチーフは衣装・髪飾り・小物・瞳のハイライトに残る
+  yokai: 怖いけど可愛い。怖さの奥に寂しさ。戻ったあとは金継ぎの跡（kintsugi motif）が残る
+
+# ---------------------------------------------------------------------------
+# Reveal pattern — 見た目・人格・物語を同じ軸で少しずつ明かす（各キャラの reveal はこの型に従う）
+#   原則：「顔を見せる＝心を開く」。各段階の終わりに必ず「問い」を一つ残す
+# ---------------------------------------------------------------------------
+reveal_pattern:
+  stages:
+    - level: 0
+      emotion: 発見（「なぜこれだけ？」）
+      visual: 物だけ
+      personality: なし
+      story: 不自然な点が一つ
+      voice: なし
+    - level: 1
+      emotion: 驚き（「顔がある！」）
+      visual: 記号的な顔
+      personality: 癖が一つだけ
+      story: 謎の断片が一つ（時刻、音、写真、家紋など）
+      voice: なし（擬音・効果音のみ）
+    - level: 2
+      emotion: 愛着（「懐いてきた」）
+      visual: 動き
+      personality: 好き嫌いが分かる
+      story: 前の持ち主の存在を示す物（書き込み、記録、メモ）
+      voice: 一言・片言（文字のみ）
+    - level: 3
+      emotion: 焦らし（「顔が見たい」）
+      visual: 人影。顔は隠れている
+      personality: 建前の人格（会話はできるが本音は言わない）
+      story: 「何があったか」は分かるが「なぜ」は分からない
+      voice: ボイスはここから（顔より先に声）
+    - level: 4
+      emotion: ご褒美（「やっと会えた」）
+      visual: 顔が見える
+      personality: 本音と弱さ
+      story: 「なぜ」が明かされる。ここから恋愛・日常へ
+      voice: 通常
+  face_hiding_rule: >-
+    Lv3 で顔を隠すのは演出の都合ではなく、キャラ自身の理由（心のわだかまり）にする。
+    顔を見せる瞬間＝わだかまりが解ける瞬間
+  yokai_side: 妖怪ルートは「本音の裏側」を見せる道。そのルートを通った人だけが知るキャラの一面
+  teaser_techniques:            # Lv4 の本番イラストをゲーム側で加工して見せる。ぼかし用の別画像は作らない
+    - 段階が上がる演出の最中に、Lv4 の姿を 0.3 秒だけ見せる
+    - 部分だけ見せる（目元、手、髪飾り）
+    - 何かを通して見せる（写真、鏡、夢、影、反射）
+    - 声が先、顔は後（Lv3 からボイス）
+    - 他の付喪神が語る（時代がつながっているので自然に入る）
+    - 図鑑では未見の姿を「？？？」とシルエットで表示
+
+reserved_motifs:
+  kintsugi:
+    description: 割れ・欠け・破れに沿った金色の線。妖怪ルートから戻ったキャラだけに使う
+    rule: 通常ルートの Lv0〜4 では「金色の継ぎ線」を描かない（真鍮など素材としての金色は可）
+    tags: "kintsugi, gold repair lines"
+
+# ---------------------------------------------------------------------------
+# Subjects — Lv4 の性別は全キャラ未決定。{subject} に差し込む
+# ---------------------------------------------------------------------------
+subjects:
+  female: "1girl, solo, adult, mature female, tall"
+  male: "1boy, solo, adult, mature male, tall"
+  ambiguous: "solo, adult, mature, tall, androgynous"    # Lv3 (face hidden) default
+
+# ---------------------------------------------------------------------------
+# Generation defaults — SDXL 系アニメモデル（Illustrious / NoobAI 系）想定、未選定
+# ---------------------------------------------------------------------------
+generation:
+  resolution: { width: 832, height: 1216 }   # portrait standing pose (SDXL bucket)
+  steps: 28
+  cfg: 5.5
+  sampler: euler_ancestral
+  seed_policy: 生成ごとに記録。採用画像の seed・モデル名・モデルハッシュは各ステージの approved に残す
+  quality_prefix: "masterpiece, best quality, very aesthetic, absurdres"   # verify: model dependent
+  style_tags: "anime coloring, soft lighting, japanese retro, old japanese house, watercolor texture, muted colors"
+
+negative_sets:
+  base: >-
+    nsfw, nude, revealing clothes, cleavage, gore, blood, injury, weapon pointed at viewer,
+    realistic, photorealistic, 3d, lowres, bad anatomy, bad hands, extra digits, deformed,
+    jpeg artifacts, text, watermark, signature, logo, username
+  object: >-
+    1girl, 1boy, humanoid, realistic eyes, eyelashes, teeth, lips, nose, tongue,
+    arms, legs, hands, fingers, feet, skin, flesh
+  adult: >-
+    child, loli, shota, petite, chibi, aged down, short stature, baby face
+  face_hidden: >-
+    visible face, looking at viewer, faceless, no face, blank face, horror, creepy
+  no_kintsugi: >-
+    kintsugi, gold repair lines, gold cracks
+
+# ---------------------------------------------------------------------------
+# QC defaults — 自動チェック（生成後のふるい）
+# ---------------------------------------------------------------------------
+qc_defaults:
+  palette_max_deviation: 0.25        # share of pixels allowed outside palette ± tolerance (draft value)
+  forbidden_tags_by_set:             # WD14-style tagger output that fails the image
+    object: [1girl, 1boy, hands, fingers, teeth, lips, tongue]
+    adult: [child, loli, shota, chibi]
+    face_hidden: [faceless, looking_at_viewer]
+    base: [blood, nude, nsfw]

@@ -1,0 +1,171 @@
+# Character Bible — フィルムカメラ（camera）
+# STATUS: 案（DRAFT）。共通設定・禁止要素・プロンプトの組み立て順は _common.yaml を参照
+
+meta:
+  id: camera
+  version: 0.1.0
+  status: draft
+  updated: 2026-10-19
+  open_questions:
+    - Lv4 の性別
+    - 「写っていない写真」が写すのは過去か未来か（物語上の大きな分岐）
+
+identity:
+  object: 二眼レフカメラ（上下に2つのレンズ、黒革張り、首から下げるストラップ）
+  era: 昭和30年代 — 祖父が家族と家の写真を撮り続けたカメラ
+  location_of_encounter: 書斎の棚。中に現像されていないフィルムが入ったまま
+  personality: 観察好きの記録係。照れ屋で自分が写るのは苦手。人のいい表情を見逃さない
+  backstory_hook: >
+    家族の写真を何百枚も撮ってきたが、撮っていた祖父自身は一枚も写っていない。
+    カメラは「撮る人も家族だった」ことを伝えたい。
+  role_in_story: 家の過去の姿を写真で見せる＝他の付喪神の記憶を探す手がかり役
+  reaction_loop:
+    - step: 気配
+      trigger: 書斎の棚を調べる
+      reaction: レンズがきらりと光る
+    - step: 気のせい？
+      trigger: 中のフィルムを現像する
+      reaction: 撮った覚えのない写真が1枚混じっている（昔のこの家の縁側）
+    - step: 確かめる
+      trigger: 同じ場所・同じ時間帯に撮ってみる
+      reaction: 写真の中の人物の位置が少しずつ変わる。上下2つのレンズがまばたきする（Lv1）
+    - step: 確信
+      trigger: レンズを磨く、湿気の少ない場所に置く
+      reaction: ストラップを揺らし、上のレンズのフタをパタパタ開け閉めして喜ぶ（Lv2）
+    - step: 顕現
+      trigger: 祖父の写っていない理由を知る（隠し条件：カメラ自身を撮る＝鏡に向けて撮る）
+      reaction: 現像した写真にだけ人影が写る（Lv3）→ 写真から出てくる（Lv4）
+
+reveal:                        # _common.yaml reveal_pattern に従う
+  face_hiding_reason: >-
+    ずっと撮る側だった。写る側（主役）になるのが怖い。祖父も同じだった
+  stages:
+    - level: 0
+      story: 中に現像されていないフィルムが入ったまま
+      question: 何が写っている？
+    - level: 1
+      personality: 好奇心が強い（向けたものをレンズで追いかける）
+      story: 撮った覚えのない、昔のこの家の縁側の写真
+      question: この写真は誰が撮った？
+    - level: 2
+      personality: 好き＝いい表情・光の具合／嫌い＝湿気・レンズの指紋
+      line: 「…いい顔」
+      story: 家族のアルバムに、撮っていた祖父だけが一枚も写っていない
+      question: なぜ撮った本人がいない？
+    - level: 3
+      personality: 建前＝「ぼくはただの記録係だから」と自分のことを話さない
+      story: 祖父は一度だけ家族に「一緒に写ろう」と言われ、断った
+      question: なぜ断った？
+    - level: 4
+      personality: 本音＝写る側になるのが怖かった。祖父も同じで、二人ともそれを後悔している
+      story: 主人公とカメラ自身が一緒に写る一枚を撮る
+  teasers:
+    - 写真の端に写り込んだ、ピンぼけの人影
+    - ストラップを持つ手だけ
+    - 現像中の印画紙に顔が浮かびかけて、途中で止まる
+  yokai_side: 「誰も自分を見てくれない」— 写す側に回され続けた寂しさ
+
+anchors:
+  palette:
+    leather: { hex: "#2A2522", name: 黒革,     role: 本体 / ジャケット・ベスト }
+    chrome:  { hex: "#B8BCC0", name: クローム銀, role: 金具・レンズの縁 / ボタン・眼鏡 }
+    sepia:   { hex: "#A47E55", name: セピア,   role: 写真 / シャツ・髪のハイライト }
+    coating: { hex: "#5B4E8C", name: レンズの青紫, role: レンズのコーティング / 瞳の色 }
+  motifs:
+    - name: 上下2つのレンズ
+      lv1: 目
+      lv4: 瞳の絞り羽根模様のハイライト、または片眼鏡
+    - name: ストラップ
+      lv2: 手の代わりに振る
+      lv4: 肩から斜めにかけたストラップ／ループタイ
+    - name: フィルム
+      lv4: フィルムの穴模様のスカーフ・ヘアバンド
+    - name: セピアの写真
+      lv3: この段階は写真の中にだけ姿が写る
+  eyes: { shape: 丸めで観察するような目, color: 青紫, highlight: 絞り羽根 }
+  signature_gesture: 両手の指で四角を作って相手を「撮る」
+
+stages:
+  - level: 0
+    name: ただのカメラ
+    concept: 書斎の棚に置かれた二眼レフ。レンズがかすかに光る
+    prompt: >-
+      no humans, still life, object focus, vintage twin-lens reflex camera, black leather body,
+      chrome trim, neck strap, on wooden bookshelf, study room, old japanese house, dust, faint lens flare
+    negative_sets: [base, object]
+    negative: "face, eyes"
+    qc: { human_face: false }
+    approved: []
+
+  - level: 1
+    name: 宿り
+    concept: 上下2つのレンズが目になり、絞りが閉じてまばたきする
+    prompt: >-
+      no humans, living object, vintage twin-lens reflex camera, two lenses as simple eyes,
+      aperture blades blinking, curious, blush stickers, on wooden bookshelf, study room, warm light
+    negative_sets: [base, object]
+    must_not:
+      - レンズの中にリアルな眼球を描く
+    qc: { human_face: false }
+    approved: []
+
+  - level: 2
+    name: 芽生え
+    concept: ストラップを揺らし、ファインダーのフタをパタパタさせて喜ぶ
+    prompt: >-
+      no humans, living object, vintage twin-lens reflex camera, waving neck strap like an arm,
+      viewfinder hood flapping, lenses as simple eyes, happy, motion lines, sparkles,
+      scattered sepia photographs, wooden desk, study room
+    negative_sets: [base, object]
+    negative: "mold, cracked lens"     # yokai-route symbols
+    qc: { human_face: false }
+    approved: []
+
+  - level: 3
+    name: 化身
+    concept: 机に置かれたセピアの写真の中にだけ、縁側に座る人影が写っている。顔は写っていない
+    prompt: >-
+      sepia photograph on wooden desk, photo of {subject} sitting on engawa veranda, from behind,
+      translucent, faint figure, holding a twin-lens reflex camera, old japanese house,
+      vintage camera beside the photo, nostalgic
+    subject_default: ambiguous
+    negative_sets: [base, adult, face_hidden, no_kintsugi]
+    must_not:
+      - 写真から顔だけが浮き出る（心霊写真の表現は妖怪ルート専用）
+    qc: { human_face: false }
+    approved: []
+
+  - level: 4
+    name: 顕現
+    concept: 写真から出てきて、指で四角を作ってこちらを「撮る」照れ屋の記録係
+    prompt: >-
+      {subject}, short wavy dark hair with sepia highlights, blue-violet eyes,
+      aperture-blade eye highlights, black leather vest, sepia shirt, film-strip pattern scarf,
+      camera strap across chest, twin-lens reflex camera hanging at waist,
+      making a finger frame, looking at viewer, shy smile, engawa veranda, old japanese house, upper body
+    subject_options: [female, male]
+    negative_sets: [base, adult, no_kintsugi]
+    qc: { human_face: true }
+    approved: []
+
+yokai_branch:
+  trigger: 湿気の多い押し入れに放置（レンズにカビ）／フタを閉めっぱなし
+  stages:
+    - id: Y1
+      name: 写し鬼（うつしおに）
+      concept: >-
+        現像するたび、写真に写る人影が一人ずつ増えていく。
+        カメラからフィルムが伸びて部屋中に垂れ下がる。暗室の赤い光
+      prompt: >-
+        no humans, haunted vintage twin-lens reflex camera, moldy lens, film strips spilling out and hanging everywhere,
+        many photographs with blurry silhouettes, darkroom red safelight, eerie, lonely, kowakawaii
+      negative_sets: [base, object]
+      qc: { human_face: false }
+      approved: []
+    - id: Y-return
+      name: 金継ぎの姿
+      concept: Lv4 と同じ姿で、首から下げたカメラのレンズの縁に金継ぎの線が残る
+      prompt_from: stages[level=4]
+      prompt_add: "kintsugi, gold repair lines on camera lens ring"
+      negative_sets_remove: [no_kintsugi]
+      approved: []

@@ -1,0 +1,174 @@
+# Character Bible — 理容はさみ（hasami）
+# STATUS: 案（DRAFT）。共通設定・禁止要素・プロンプトの組み立て順は _common.yaml を参照
+# NOTE: 刃物のキャラ。全年齢・ストア審査のため、刃を見る人に向けない／流血・切断を連想させない
+
+meta:
+  id: hasami
+  version: 0.1.0
+  status: draft
+  updated: 2026-10-19
+  open_questions:
+    - Lv4 の性別
+    - 家の一角が昭和の理容店だった、という設定を採用するか（店の空間がゲームの新エリアになる）
+
+identity:
+  object: 理容師の鋏（鋼、2つの指穴、小指掛け、革のシザーケース）
+  era: 昭和30〜40年代 — 家の土間側で営んでいた小さな理容店の鋏
+  location_of_encounter: 閉めた店の鏡台の引き出し。錆びかけ
+  personality: 粋で口が達者、身だしなみにうるさい。でも人の話を聞くのがうまい（床屋は町の聞き役）
+  backstory_hook: >
+    町の人みんなの髪を切ってきた。最後に一つだけ果たせなかった予約がある
+    （「晴れの日にはここで髪を整える」と約束した客）。
+  role_in_story: 町の人の噂と記憶の集まる場所。他の道具の持ち主たちの話を知っている
+  reaction_loop:
+    - step: 気配
+      trigger: 閉めた店に入る
+      reaction: 引き出しの中で、かすかにチャキッと鳴る
+    - step: 気のせい？
+      trigger: 錆を落とし、油を差して研ぐ（研ぎミニゲーム）
+      reaction: 開け閉めの音が軽やかなリズムを刻む
+    - step: 確かめる
+      trigger: 何を切るか試す（髪＝喜ぶ／紙や針金＝拗ねる）
+      reaction: 2つの指穴が目のようにきらりと光る（Lv1）
+    - step: 確信
+      trigger: 毎日手入れしてケースにしまう
+      reaction: 刃を脚にしてチョキチョキ歩き、小指掛けを尻尾のように振る（Lv2）
+    - step: 顕現
+      trigger: 隠し条件：店の鏡の前で、主人公の髪を整える
+      reaction: 鏡の中にだけ理容師の人影が映り（Lv3）、鏡から振り向く（Lv4）
+
+reveal:                        # _common.yaml reveal_pattern に従う
+  face_hiding_reason: >-
+    客と目を合わせるのは鏡越しという、床屋の作法。直接向き合うのは「最後の予約」の相手だけと決めている
+  stages:
+    - level: 0
+      story: 家の土間側に、閉めたままの小さな理容店がある
+      question: なぜ店を閉めた？
+    - level: 1
+      personality: 粋（手入れをするとウインクする）
+      story: 予約帳の最後のページに、名前が一つだけ残っている
+      question: この予約の客は誰？
+    - level: 2
+      personality: 好き＝髪を切ること・手入れ／嫌い＝紙や針金を切らされること
+      line: 「野暮だねぇ」
+      story: 店に残る町の人の写真と噂話（他の道具の持ち主の話がここで出る）
+      question: 予約の日、何があった？
+    - level: 3
+      personality: 建前＝聞き上手の理容師。人の話ばかり聞いて、自分の話はしない
+      story: 最後の予約は「晴れの日」（結婚式）の朝だった。客は来なかった
+      question: 客はなぜ来なかった？
+    - level: 4
+      personality: 本音＝自分も誰かに話を聞いてほしかった
+      story: 最後の予約の真相。主人公の「晴れの日」の髪を整える約束（結婚エンドにつながる）
+  teasers:
+    - 鏡の中に映る白衣の肩
+    - 櫛をくるりと回す手だけ
+    - 曇った鏡の向こうの口元の笑み
+  yokai_side: 「誰も自分の話は聞かない」— 町の聞き役でいた孤独
+
+anchors:
+  palette:
+    steel:    { hex: "#A9B1B8", name: 鋼の銀,   role: 刃 / 丸眼鏡・ボタン }
+    coat:     { hex: "#F5F5F2", name: 白衣,     role: 理容衣 / コート }
+    pole_red: { hex: "#C0392B", name: サインポールの赤, role: 差し色（ネクタイ・リボンの斜め縞） }
+    pole_blu: { hex: "#2C5DA8", name: サインポールの青, role: 差し色（同上）・瞳の色 }
+  motifs:
+    - name: 2つの指穴
+      lv1: 目
+      lv4: 丸眼鏡、または2連の輪のイヤリング
+    - name: 刃
+      lv2: 脚の代わりに歩く
+      lv4: 腰のシザーケース（刃は必ずケースに収まっている）
+    - name: 小指掛け
+      lv2: 尻尾のように振れる
+      lv4: 髪のはね毛
+    - name: サインポールの斜め縞
+      lv4: ネクタイ・リボン・腕章の赤青白の斜めストライプ
+  eyes: { shape: 細めで余裕のある目, color: 青, highlight: 鋼のきらめき }
+  signature_gesture: 櫛をくるりと回してから胸ポケットに挿す
+
+stages:
+  - level: 0
+    name: ただの鋏
+    concept: 鏡台の引き出しの中の、錆びかけた理容鋏
+    prompt: >-
+      no humans, still life, object focus, barber scissors, closed scissors, slightly rusty steel,
+      leather scissor case, inside wooden drawer, vintage barbershop, mirror, dust, dim light, faint glint
+    negative_sets: [base, object]
+    negative: "face, eyes, open blades"
+    qc: { human_face: false }
+    approved: []
+
+  - level: 1
+    name: 宿り
+    concept: 2つの指穴が目になって、きらりとまばたきする
+    prompt: >-
+      no humans, living object, shiny barber scissors, closed blades, two finger rings as simple eyes,
+      winking, blush stickers, sparkle, on barber counter, vintage barbershop, warm light
+    negative_sets: [base, object]
+    must_not:
+      - 開いた刃を口に見立てる（噛みつくように見える）
+    qc: { human_face: false }
+    approved: []
+
+  - level: 2
+    name: 芽生え
+    concept: 刃を脚にしてチョキチョキ歩き、小指掛けを尻尾のように振る
+    prompt: >-
+      no humans, living object, barber scissors walking on blade tips like legs, finger rings as simple eyes,
+      finger rest wagging like a tail, happy, motion lines, small hair clippings floating, sparkles,
+      barber counter, vintage barbershop, barber pole in background
+    negative_sets: [base, object]
+    negative: "cutting, rust, torn hair"     # yokai-route symbols
+    must_not:
+      - 刃先を見る人に向ける構図
+    qc: { human_face: false }
+    approved: []
+
+  - level: 3
+    name: 化身
+    concept: 理容店の鏡の中にだけ、白衣の理容師の人影が映っている。顔は鏡の枠の外
+    prompt: >-
+      vintage barbershop mirror, reflection of {subject} in the mirror, white barber coat, holding comb,
+      head out of frame, face cropped by mirror frame, translucent reflection, ghostly glow,
+      empty barber chair in front of the mirror, barber scissors on counter, warm evening light
+    subject_default: ambiguous
+    negative_sets: [base, adult, face_hidden, no_kintsugi]
+    qc: { human_face: false }
+    approved: []
+
+  - level: 4
+    name: 顕現
+    concept: 鏡から振り向く、粋な理容師。鋏は腰のケースに収まっている
+    prompt: >-
+      {subject}, slicked back hair, one hair strand sticking up, round steel glasses, blue eyes, narrow eyes,
+      white barber coat, red white blue diagonal striped necktie, leather scissor holster at hip,
+      comb in breast pocket, confident smile, looking at viewer, vintage barbershop, barber chair, mirror, upper body
+    subject_options: [female, male]
+    negative_sets: [base, adult, no_kintsugi]
+    negative: "holding scissors, open blades"
+    qc: { human_face: true }
+    approved: []
+
+yokai_branch:
+  trigger: 紙や針金など髪以外を切らせ続ける／錆びたまま放置
+  stages:
+    - id: Y1
+      name: 髪切り（かみきり）
+      concept: >-
+        伝承の妖怪「髪切り」（夜道で人知れず髪を切る）。夜の店で、誰もいないのに
+        チョキチョキと音だけがして、床に髪の束が落ちている。鋏は錆び、鳥のくちばしのような形の影
+      prompt: >-
+        no humans, kamikiri yokai, rusty barber scissors floating, beak-shaped shadow, snipping sound effect,
+        bundles of hair on floor, empty barbershop at night, moonlight, eerie, lonely, kowakawaii
+      negative_sets: [base, object]
+      negative: "blood, injury, cut skin"
+      qc: { human_face: false }
+      approved: []
+    - id: Y-return
+      name: 金継ぎの姿
+      concept: Lv4 と同じ姿で、丸眼鏡のフレーム（＝指穴）に金の象嵌の線が残る
+      prompt_from: stages[level=4]
+      prompt_add: "gold inlay lines on glasses frame, kintsugi"
+      negative_sets_remove: [no_kintsugi]
+      approved: []
