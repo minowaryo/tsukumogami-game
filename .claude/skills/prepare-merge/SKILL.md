@@ -80,12 +80,20 @@ the rules; this file is only the procedure. The active profile is the `Profile:`
    git checkout <base>
    git fetch && git merge --ff-only origin/<base>   # skip if there is no remote
    git merge --no-ff --no-commit <branch>
-   <test command>                                   # e.g. php artisan test
+   <test command>                                   # docs/ai-context/common-commands.md; see below
    git commit -F - <<'EOF'                          # only if the tests passed
    <merge message>
    EOF
    git branch -d <branch>
    ```
+
+   The plan says whether `<test command>` will run (`docs/development/git-workflow.md` §5).
+   It is skipped only when, **after** the `--ff-only` update,
+   `git merge-base --is-ancestor <base> <branch>` succeeds (the base has not moved, so the merged
+   tree equals the branch tip) **and** the full suite passed in this session on exactly the
+   committed tree. Say which run that was; the `Tests:` trailer records it. Otherwise, or when
+   unsure, it runs. When the project has no test suite yet, say so in the plan and in the
+   `Tests:` trailer (`Tests: none yet`).
 
 6. **Merge on instruction** — run the sequence. Stop and report, without reconciling on
    your own, if: the `--ff-only` update fails (local `<base>` has diverged from the
@@ -97,3 +105,15 @@ the rules; this file is only the procedure. The active profile is the `Profile:`
 7. **After the merge** — the local branch is deleted as listed. Push `<base>` and delete the
    remote branch only on explicit instruction (§4 Authority); a `lite` combined-run approval
    counts as that instruction for the push it listed.
+8. **Report** — always end with this table, also when a step failed — then say which step
+   stopped it and what was not run (`docs/development/roles-and-decisions.md` §3):
+
+   | Item | Result |
+   |---|---|
+   | Commits | Short SHAs and subjects created in this run, or "—" |
+   | Merge | Merge commit SHA into `<base>`, or where it stopped |
+   | Tests on merged result | e.g. `42 passed`, or "skipped — base unchanged; 42 passed on branch tip <sha>" |
+   | Review | normal / enhanced / skipped |
+   | Domain Boundary | findings, "none", or "skipped" |
+   | Branch | local branch deleted / kept |
+   | Push | pushed to `origin/<base>` / not pushed |
