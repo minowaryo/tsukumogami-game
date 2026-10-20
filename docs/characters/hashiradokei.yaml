@@ -5,7 +5,8 @@ meta:
   id: hashiradokei
   version: 0.1.0
   status: draft
-  updated: 2026-10-19
+  cast: prototype          # 試作3体（2026-10-20 Ryo 決定）
+  updated: 2026-10-20
   open_questions:
     - Lv4 の性別（_common.yaml subjects）
     - 物語の軸（九十九年目の家）での役割をどこまで背負わせるか（家の付喪神＝座敷わらしとの関係）

@@ -5,7 +5,8 @@ meta:
   id: chochin
   version: 0.1.0
   status: draft
-  updated: 2026-10-19
+  cast: prototype          # 試作3体（2026-10-20 Ryo 決定。カメラと入れ替え）
+  updated: 2026-10-20
   open_questions:
     - Lv4 の性別
     - お盆提灯（先祖を迎える灯）にするか、家紋入りの弓張り提灯（夜道の迎え）にするか。下書きは後者

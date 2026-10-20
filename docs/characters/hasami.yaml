@@ -6,7 +6,8 @@ meta:
   id: hasami
   version: 0.1.0
   status: draft
-  updated: 2026-10-19
+  cast: later              # 試作には入れない（正式版の候補として保持）
+  updated: 2026-10-20
   open_questions:
     - Lv4 の性別
     - 家の一角が昭和の理容店だった、という設定を採用するか（店の空間がゲームの新エリアになる）
