@@ -1,39 +1,46 @@
-# glossary.md — Terminology Glossary
+# glossary.md — 用語集
 
-> Defines project-specific terms and abbreviations.
-> Write these accurately to create a shared language between AI and humans.
+> AI と Ryo の共通の言葉。用語を増やしたらここに書く。
 
-## Domain Terms
+## 世界観・ゲーム
 
-| Term | Definition | Alias |
-|---|---|---|
-| [term1] | [definition] | [if any] |
-| [term2] | [definition] | - |
-
-## Technical Terms (Project-specific usage)
-
-| Term | Meaning in this project |
+| 用語 | 意味 |
 |---|---|
-| Action | Single-responsibility business operation class (`app/Actions/`) |
-| Service | Higher-level service class that orchestrates multiple Actions (`app/Services/`) |
-| Domain Boundary | The Service/Action layer plus the Policy layer — everything that decides, authorizes, or persists. Controllers sit outside it and may not cross it (see `.claude/rules/10-laravel.md`) |
-| ADR | Architecture Decision Record |
-| Gate | Laravel authorization mechanism (called via Policy) |
-| RCID | Requirement Change ID (used for traceability) |
+| 付喪神（つくもがみ） | 長く大切に使われた道具に宿る魂。「九十九神」とも書く |
+| 依代（よりしろ）方式 | 物が人に変形するのではなく、物に宿った魂が人の姿で出てくるという決まり。物は物のまま使える |
+| 擬人化の段階 | Lv0 ただの物 → Lv1 宿り（顔）→ Lv2 芽生え（動き）→ Lv3 化身（顔を隠した人影）→ Lv4 顕現（人の姿） |
+| 神様ルート／妖怪ルート | 大切にすると付喪神（神様）に、粗末にすると妖怪に近づく分岐 |
+| 神様度／妖怪度 | 2つの隠しゲージ。条件はゲーム内で明かさない（原案の案） |
+| 隠し条件 | 擬人化を進める、明示されない条件（表の条件＝普通に進む、裏の条件＝ご褒美） |
+| 気配 | 魂が宿りかけた物が見せるヒント（かすかに光る、揺れる） |
+| 反応ループ | 気配 → 気のせい？ → 確かめる → 確信 → 顕現 の流れ |
+| 九十九年目の家 | 舞台の古民家。百年目に神様になるか妖怪になるかが決まる（有力案） |
+| 灯（あかり） | 道具が一人目覚めるたびに家にともる灯。そろうと家の付喪神が現れる（有力案） |
+| 金継ぎ | 割れた器を漆と金で継ぐ技法。妖怪ルートから戻ったキャラだけに残る金色の継ぎ線（予約済みのモチーフ） |
+| 正典 | Ryo が採用を決めた世界観・キャラ・物語・用語。変えるときは Ryo の判断が要る |
 
-## Abbreviations
+## 画像生成
 
-| Abbreviation | Full Name |
+| 用語 | 意味 |
 |---|---|
-| BA | Business Analyst |
-| ADR | Architecture Decision Record |
-| PII | Personally Identifiable Information |
-| ERD | Entity Relationship Diagram |
-| MVP | Minimum Viable Product |
+| Character Bible | キャラごとの見た目の約束事をまとめた YAML（`docs/characters/`） |
+| アンカー | 全段階で引き継ぐ配色・モチーフ・目・仕草。キャラの同一性の基準 |
+| reveal | 段階ごとに明かす人格・物語・残す問い（Character Bible の項目） |
+| cast | 試作に入れるか（`prototype`）、後に回すか（`later`） |
+| 自動 QC | 生成画像を機械的にふるいにかける仕組み（顔検出、禁止タグ、配色） |
+| 生成ログ | モデル・seed・設定・費用を1枚ごとに記録した JSONL。同じ画像を作り直すため |
+| ComfyUI | 画像生成の工程を箱（ノード）でつなぎ、ワークフローとして実行するツール（ADR-0001） |
+| パートナーノード | ComfyUI から有料のクラウドモデルを呼ぶ公式の仕組み。Comfy のクレジットで払う |
+| LoRA | キャラなどを追加で学習させる小さなモデル |
 
-## Status Definitions
+## 開発の進め方
 
-| Status | Meaning |
+| 用語 | 意味 |
 |---|---|
-| [status1] | [definition] |
-| [status2] | [definition] |
+| 判断A（着手） | 作るもの・完了条件を Ryo が承認する場面 |
+| 判断B（確認） | できたものを Ryo が触って判断する場面 |
+| 判断C（取り込み） | コミット・マージを Ryo が承認する場面 |
+| 止まる条件 | 判断A の後でも AI が止まって聞く8つの条件（`docs/development/roles-and-decisions.md`） |
+| 完了条件 | 「何ができたら完成か」を触って確かめられる言葉で書いたもの。テストの期待値の元 |
+| ADR | Architecture Decision Record。技術・方針の判断とその理由の記録（`docs/adr/`） |
+| 原案 | Ryo が持ち込んだ企画資料（`docs/original-docs/tsukumogami-game/`、読み取り専用） |

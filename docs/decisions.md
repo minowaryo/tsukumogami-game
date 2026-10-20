@@ -1,0 +1,16 @@
+# decisions.md — 決定ログ
+
+Ryo が決めたことだけを書く。AI の提案は書かない（提案は各ドキュメントに「案」として書く）。
+記録は AI が行う（`docs/development/roles-and-decisions.md` §4）。
+2026-10-17 までの決定は原案の `docs/original-docs/tsukumogami-game/docs/05_decisions.md` を参照。
+
+| 日付 | 決定事項 | 関連 |
+|---|---|---|
+| 2026-10-19 | 原案の資料（ZIP）を `docs/original-docs/tsukumogami-game/` に展開して置く | `docs/original-docs/README.md` |
+| 2026-10-19 | 擬人化の候補として、カメラ・ピアノ・提灯・黒電話・理容はさみ・柱時計を掘り下げる（傘は採用しない） | `docs/characters/` |
+| 2026-10-20 | 見た目の段階は Lv1〜4（＋Lv0 ただの物）とし、Lv3 で顔を隠して焦らす。見た目・人格・物語を同じ段階で少しずつ明かす | `docs/characters/_common.yaml` |
+| 2026-10-20 | 試作3体は柱時計・提灯・ピアノ（一度カメラを選び、同日に提灯と入れ替え） | `docs/characters/README.md` |
+| 2026-10-20 | クラウドの画像・動画生成の費用は月 40 ドルまで | ADR-0001 |
+| 2026-10-20 | AI 生成の画像・動画は、出来栄えで判断し、良ければそのままリリースに使う | ADR-0002 |
+| 2026-10-20 | 15秒動画の作成と判断の一番の基準は「付喪神のプロット・設定・世界観が伝わるか」。BGM は後回し | `PLAN.md` Phase 1 |
+| 2026-10-20 | 開発は基本的に AI エージェントに任せる。人間と AI の役割分担を定義し、それに合わせてこのリポジトリのルールを書き換える | `docs/development/roles-and-decisions.md`、ADR-0003 |

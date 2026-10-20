@@ -2,75 +2,58 @@
 
 ## Project
 
-- **Project name**: [PROJECT_NAME]
-- **Stack**: [e.g. Laravel + MySQL]
-- **Type**: [e.g. Monolith web application / API / etc.]
-- **Main domains**: [e.g. Inventory management / Order processing / etc.]
-- **Repository**: [GitLab/GitHub URL]
+- **Project**: 付喪神 擬人化育成ゲーム（仮題）— 物を大切にすると付喪神が宿り、日用品が少しずつ人の姿になるスマホゲーム
+- **Owner**: Ryo（判断・レビュー・仕様を決める人。開発は AI エージェントに任せる）
+- **Phase**: Phase 0（世界観の深掘り、キャラ設計、画像生成の基盤、変化デモの試作）
+- **Stack**: 未定。Phase 0 はブラウザの 2D 試作（`prototype/`）と、Python＋ComfyUI の画像生成ハーネス（ADR-0001）
+- **Original materials**: `docs/original-docs/tsukumogami-game/`（読み取り専用。原案の企画・世界観・キャラ・ロードマップ）
 
----
+## Roles first
 
-## ⚠️ Required Steps Before Starting the Project (Gate 0)
-
-After cloning this repository, complete the one-time setup steps in **`SETUP.md`** before touching any code.
-AI cannot provide accurate assistance until the files it lists are filled in. `SETUP.md` is read once
-at project kickoff — it is not part of the steady-state per-session reading list below.
-
----
+**このプロジェクトのルールの土台は `docs/development/roles-and-decisions.md`（役割分担と判断ポイント）。**
+Ryo が判断するのは「判断A：着手」「判断B：確認」「判断C：取り込み」と、AI が止まる8つの条件だけ。
+それ以外は AI が進める。
 
 ## Read first (every session)
 
 - `docs/ai-context/project-summary.md`
 - `docs/ai-context/glossary.md`
-- `docs/ai-context/module-map.md`
-- `docs/ai-context/common-commands.md`
+- `docs/development/roles-and-decisions.md`
+- `PLAN.md`（今どこまで進んでいて、次に何をするか）
 
 ## Read when relevant (task-based)
 
-| Task type | Read this |
+| Task | Read |
 |---|---|
-| Creating / updating requirements.md or use-cases.md | `docs/original-docs/` (primary sources) + `docs/product/requirements.md`; for ambiguous points, `.claude/skills/grill-me/SKILL.md` (one-question-at-a-time interview, Trial); before asking for approval, run `bash .claude/hooks/spec-lint.sh` (`--requirements` before Gate 1) |
-| Requirements / UC reference | `docs/product/requirements.md` + `docs/product/use-cases.md` |
-| Code implementation (feature development) | `docs/product/use-cases.md` + `docs/architecture/data-model.md` + `docs/product/mockups/` |
-| UI implementation / mock-based development | `docs/product/ui-guidelines.md` + `docs/product/mockups/` |
-| Frontend component changes | `.claude/rules/15-frontend.md` (implementation rules for the selected frontend stack — see `meta/adr/ADR-0005-frontend-stack.md`) |
-| Auth / authorization changes | `docs/architecture/authz-authn.md` + `docs/product/org-permission-philosophy.md` (business-side permission philosophy) |
-| DB schema changes | `docs/architecture/data-model.md` + `docs/adr/` |
-| Architecture / core design changes | `docs/adr/` |
-| Adding / modifying tests | `docs/development/testing-strategy.md` + `docs/product/use-cases.md` + `docs/architecture/data-model.md` |
-| Writing E2E tests (`/generate-e2e-test`) | `docs/development/e2e-testing.md` (not loaded every session) |
-| Security-related changes | `docs/security/secrets-handling.md` |
-| Creating credentials / API keys, etc. | `docs/credentials/` (follow the handling rules in `.claude/rules/40-security.md`) |
-| Change request (CR) | `docs/rcid/traceability-matrix.md` |
-| User-facing feature / usage change | `docs/product/user-guide.md` |
-| Performing UAT (acceptance testing, optional) | `docs/product/uat-scenarios.md` + `docs/product/uat-results/` (see the UAT section in `.claude/rules/00-global.md`; non-blocking) |
-| Hit an error or library-specific snag | `docs/ai-context/known-pitfalls.md` (check first for a known issue, and append once resolved); for an unclear/non-trivial bug, `.claude/skills/systematic-debugging/SKILL.md` (Trial) |
-| Claiming a task, fix, or feature is complete | `.claude/skills/verification-before-completion/SKILL.md` (Trial) — verify with an actual run before reporting success |
+| 企画・世界観・キャラの検討 | `docs/original-docs/tsukumogami-game/docs/`（原案）＋ `docs/characters/` ＋ `docs/decisions.md` |
+| キャラの画像・プロンプト | `docs/characters/README.md`、`docs/characters/_common.yaml`、ADR-0001 |
+| 動画・プロモーション | `PLAN.md` の Phase 1（大方針：世界観が伝わるか） |
+| AI 生成素材をリリースに使うか | ADR-0002 |
+| 技術の採用・方針の変更 | `docs/adr/`（必要なら新しい ADR を下書きして Ryo に採択してもらう） |
+| 実装・テスト | `.claude/rules/30-testing.md` |
+| 秘密情報・外部サービス | `.claude/rules/40-security.md`、`docs/credentials/` |
+| エラーやライブラリ固有のつまずき | `docs/ai-context/known-pitfalls.md`。原因が分からないバグは `.claude/skills/systematic-debugging/SKILL.md` |
+| 「完了した」と報告する前 | `.claude/skills/verification-before-completion/SKILL.md`（実際に実行して確かめてから報告する） |
+| Git（ブランチ、コミット、push、マージ） | `.claude/rules/70-git.md` → `docs/development/git-workflow.md` |
 
 ## Global rules
 
-- **Workflow**: Proceed in the order: Explore → Plan → Implement → Test
-- Always read `docs/ai-context/` at the start of a session
-- **Do not generate code until Gate 2 (use-cases.md approval) is complete**
-- **Do not start implementation (Green phase) until Gate 4 (test case approval) is complete** (`.claude/rules/30-testing.md`)
-- `docs/original-docs/` is read-only (editing, deleting, and creating files prohibited), except its own `README.md`, which AI may edit
-- Review documentation before touching code
-- Always check `docs/adr/` before making large-scale changes
-- Authorization must always go through Policy / Gate (bypassing is prohibited)
-- Do not make DB schema changes without a migration plan
-- Git (branches, commits, push, merge): `.claude/rules/70-git.md`
-- When design intent changes, update documentation too
+- **判断A（完了条件の承認）の前に、実装に入らない**。試作なら数行の提案に「OK」で足りる
+- **止まる条件**（お金・外部公開・新しいツール・取り消せない操作・正典の変更・権利・合意範囲の超過・セキュリティ例外）に当たったら、その場で止まって聞く
+- Ryo の決定は `docs/decisions.md` に記録する。提案は「案」と明記して各ドキュメントに書く
+- `docs/original-docs/` は読み取り専用（編集・削除・新規作成は禁止。ただし同フォルダの `README.md` は編集してよい）
+- AI 生成の画像・音声は、リリースに使うと決まるまで `assets/proto/` に置き、本番素材と区別する（ADR-0002）
+- キャラは全員、ひと目で大人に見えるデザインにする。全年齢向け（原案）
+- 外部への投稿・ストア申請・課金設定は AI が実行しない。Ryo が手で行う
+- 設計の意図が変わったら、ドキュメントも同時に更新する
 
 ## Detailed rules
 
-See `.claude/rules/` for detailed rules:
+- `.claude/rules/00-global.md` — 作業の流れ、判断ポイント、禁止事項
+- `.claude/rules/30-testing.md` — テストと検証
+- `.claude/rules/40-security.md` — 秘密情報、外部サービス、画像生成の安全面
+- `.claude/rules/50-review.md` — レビュー（テンプレート由来。Laravel 向けの観点は該当しないものを飛ばす）
+- `.claude/rules/60-docs.md` — ドキュメントの更新
+- `.claude/rules/70-git.md` — Git の核となるルール
 
-- `.claude/rules/00-global.md` - Global policy, development flow, quality gates
-- `.claude/rules/10-laravel.md` - Laravel-specific rules
-- `.claude/rules/15-frontend.md` - Frontend-specific rules (content is rewritten per project based on the selection in `meta/adr/ADR-0005-frontend-stack.md`; default content is Vue.js + Inertia.js)
-- `.claude/rules/20-mysql.md` - MySQL-specific rules
-- `.claude/rules/30-testing.md` - Test strategy (Feature/Unit, TDD)
-- `.claude/rules/40-security.md` - Security
-- `.claude/rules/50-review.md` - Review guidelines (core; full: `docs/development/review-guidelines.md`)
-- `.claude/rules/60-docs.md` - Documentation update rules
-- `.claude/rules/70-git.md` - Git core (profile + safety rules; full rules in `docs/development/git-workflow.md`)
+テンプレート由来で退避したルール（Laravel・MySQL・Vue）と元の版は `meta/template-archive/` にある。読み込まない。

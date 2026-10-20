@@ -1,64 +1,43 @@
-# project-summary.md — Project Overview
+# project-summary.md — プロジェクト概要
 
-> This is the first file AI reads. Keep it concise enough to grasp the big picture in 3–5 minutes.
-> For details, refer to the individual `docs/` files.
+> AI が最初に読むファイル。3〜5分で全体がつかめる短さに保つ。詳細は各ドキュメントへ。
 
-> **Template placeholder check**: if this file still shows bracketed placeholders like
-> `[PROJECT_NAME]` *and* the repository already contains substantial application code
-> (models/controllers/migrations beyond a skeleton), stop before acting on any other
-> request and tell the user this looks like adopting the harness onto an existing
-> codebase — point them at `SETUP.md`'s Existing-Codebase Path and suggest running
-> `/onboard-existing-codebase`.
+## 概要
 
-## Project Overview
-
-| Item | Details |
+| 項目 | 内容 |
 |---|---|
-| Project name | [PROJECT_NAME] |
-| Purpose | [What it is built for] |
-| Target users | [Who will use it] |
-| Phase | [MVP / Beta / Production] |
+| プロジェクト名 | 付喪神 擬人化育成ゲーム（仮題。正式タイトル未定） |
+| 一言 | 物を大切にすると付喪神が宿り、日用品が少しずつ人の姿になる、スマホ向けの育成×恋愛ゲーム |
+| 対象 | スマホ（iOS / Android）。日本を収益の柱に、東南アジア・東アジア・英語圏も最初から視野 |
+| 全年齢 | 全年齢向け。キャラは全員ひと目で大人に見えるデザイン |
+| オーナー | Ryo（個人開発、週 10〜15 時間。判断・レビュー・仕様を決める人） |
+| 開発 | 基本的に AI エージェント（Claude Code、Codex）に任せる（`docs/development/roles-and-decisions.md`） |
+| フェーズ | Phase 0（世界観の深掘り、キャラ設計、画像生成の基盤、変化デモの試作） |
 
-## Technology Stack
+## 世界観の芯
 
-| Layer | Technology |
+- **付喪神**：長く大切に使われた道具に魂が宿る、という言い伝え。粗末にされた道具は妖怪になる面もある
+- **依代方式**：物が人に変形するのではなく、物に宿った魂が人の姿で出てくる。物は物のまま使える
+- **九十九年目の家**：受け継いだ古民家は今年で九十九年目。百年目に、家が神様になるか妖怪になるかが決まる（有力案）
+- **段階的な擬人化**が最大の見せ場（Lv0 ただの物 → Lv1 顔 → Lv2 動き → Lv3 顔を隠した人影 → Lv4 人の姿）
+
+## 技術
+
+| 層 | 内容 |
 |---|---|
-| Backend | Laravel [version] |
-| DB | MySQL [version] |
-| Frontend | [e.g. Blade / Vue / React] |
-| Auth | [e.g. Laravel Sanctum] |
-| Queue | [e.g. Laravel Horizon + Redis] |
-| Storage | [e.g. S3] |
+| ゲーム本体 | 未定。Phase 0 はブラウザの 2D 試作（`prototype/`） |
+| キャラ画像 | ComfyUI（ローカル、SDXL 系アニメモデル）＋必要なときだけクラウドの画像編集 AI（ADR-0001、Proposed）。クラウドは月 40 ドルまで |
+| 画像の仕様 | Character Bible（`docs/characters/*.yaml`） |
+| 最終素材 | AI 生成で出来が良ければそのまま使う。だめならイラストレーターに依頼（ADR-0002） |
 
-## Main Domains
+## 今のフォーカス
 
-| Domain | Description | Main Models |
-|---|---|---|
-| users | User management and authentication | User, Role |
-| [domain2] | [description] | [Model] |
-| [domain3] | [description] | [Model] |
+`PLAN.md` を参照。試作3体は**柱時計・提灯・ピアノ**。
 
-## Directory Structure (Overview)
+## 読む順番（AI 向け）
 
-```
-app/
-  Http/Controllers/   - Controllers (keep thin)
-  Services/           - Business logic
-  Actions/            - Single-responsibility action classes
-  Models/             - Eloquent models
-  Policies/           - Authorization policies
-docs/                 - All design documents
-.claude/              - Claude Code rules and commands
-```
-
-For details, see `docs/ai-context/module-map.md`.
-
-## Current Focus
-
-[Describe the features and fixes being worked on in the current sprint]
-
-## Reading Order (Guide for AI)
-
-1. This file (get the big picture)
-2. `docs/ai-context/module-map.md` (understand the structure)
-3. Detailed documents relevant to the task (refer to the mapping table in CLAUDE.md)
+1. このファイル
+2. `docs/ai-context/glossary.md`
+3. `docs/development/roles-and-decisions.md`
+4. `PLAN.md`
+5. 作業に関係するドキュメント（`CLAUDE.md` の対応表）

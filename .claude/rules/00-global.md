@@ -1,111 +1,59 @@
-# 00-global.md — Global Policy
+# 00-global.md — 全体の方針
 
-## Prerequisites: Verify these when reading this file
+> 土台は `docs/development/roles-and-decisions.md`。このファイルはその要約と、毎回守ること。
 
-Check whether the following are filled in. If not, stop work and notify the user.
-
-- [ ] Is `docs/ai-context/project-summary.md` filled in?
-- [ ] Is `docs/ai-context/glossary.md` filled in?
-- [ ] Does an ADR for the frontend stack selection exist under `docs/adr/` (has the selection process in `meta/adr/ADR-0005-frontend-stack.md` been completed)?
-- [ ] What is the approval status of `docs/product/use-cases.md`?
-- [ ] If this is adoption onto an existing codebase (`docs/ai-context/` still placeholder, but the repo already has substantial application code), was `SETUP.md`'s Existing-Codebase Path followed instead of Step 1-3? (`docs/ai-context/project-summary.md`'s own placeholder content is the primary trip-wire for this — this check is reinforcement.)
-
----
-
-## Development Workflow
-
-Always proceed in this order:
+## 作業の流れ
 
 ```
-Explore → Plan → Implement → Test
+調べる → 判断A（着手）→ 作る・テストする → 確かめる → 判断B（確認）→ 判断C（取り込み）
 ```
 
-1. **Explore**: Read `docs/ai-context/` and related documents to understand the current state
-2. **Plan**: Organize the scope and risks of changes, present the implementation approach to the user, and get agreement
-3. **Implement**: Implement according to the agreed plan (do not touch out-of-scope files)
-4. **Test**: Add and run Feature Tests to verify behavior
+1. **調べる**：`docs/ai-context/`、`PLAN.md`、関係するドキュメントと原案を読む
+2. **判断A**：作るもの、完了条件（触って確かめられる言葉で）、やらないこと、おおよその手間・費用を Ryo に出し、OK をもらう
+3. **作る・テストする**：合意した範囲で実装し、ロジックはテストで確かめる（`30-testing.md`）
+4. **確かめる**：実際に動かして、完了条件を満たしているか確認する（`verification-before-completion`）
+5. **判断B**：動くもの（画面・動画・URL）と検証の結果を出し、Ryo が触って判断する
+6. **判断C**：コミット・マージの案を出し、承認をもらう（`70-git.md`）
 
----
+判断A の OK が出たら、判断B まで止まらずに進める。ただし下の「止まる条件」に当たったら止まる。
 
-## AI Development Pipeline
+## 止まる条件（その場で Ryo に聞く）
 
-> For the full pipeline diagram (document creation → Gate approval → TDD implementation), see `SETUP.md` Step 1-4 (do not duplicate the diagram in this file — if the diagram changes, update it only in `SETUP.md`).
-> See the "Quality Gate Details" table below for the condition and unlocks of each Gate 0-4.
-> See `.claude/rules/30-testing.md` for the detailed steps of each phase and when to run each skill.
-> See the next section for where UAT (optional, non-blocking) fits in.
+1. お金がかかる（有料のサービス・契約、上限を超えそう）
+2. 外に出る（公開、投稿、送信、外部への共有）
+3. 新しいツール・ライブラリ・サービスを入れる、ルールや方針を変える（→ ADR を下書き）
+4. 取り消せない操作（ファイル・データの削除、Git 履歴の書き換え）
+5. 決定済みの世界観・キャラ・物語・用語を変える
+6. ライセンス・商用利用・規約の判断
+7. 判断A の範囲を超える、または完了条件を満たせないと分かった
+8. セキュリティのルールの例外
 
----
+## 判断がいらないこと（AI が進めてよい）
 
-## UAT (Acceptance Testing, Optional)
+調査、ブレスト、ドキュメント・ADR の下書き、判断A 後の実装・テスト・リファクタ・デバッグ、
+ビルド・テストの実行・ローカルでの動作確認、
+決められた予算内の画像生成と自動 QC、ブランチの作成、ADR の範囲内の細かい技術判断（理由を記録に残す）。
 
-- `docs/product/uat-scenarios.md` may be drafted by AI after merging
-- Real-device verification and final confirmation are done by a human (reviewer / business side), who records the results in `docs/product/uat-results/` (this final confirmation itself is required work, but it is not treated as a Gate)
-- **UAT belongs to none of Gates 0-4** and does not block the Gate 0-4 pipeline or TDD cycle of other features/UCs
-- Non-completion or non-approval of UAT is never a reason to halt subsequent development work (implementing another feature, starting the next TDD cycle, etc.)
+## 決定の記録
 
----
+- Ryo が明言した決定は `docs/decisions.md` に記録する（日付、内容、関連ファイル）
+- AI の提案は決定ログに書かない。各ドキュメントに「案」と明記して書く
+- 原案（`docs/original-docs/`）は読み取り専用。原案と食い違う決定が出たら、`docs/decisions.md` と関係する ADR に書く
 
-## Quality Gate Details
+## 禁止事項
 
-| Gate | Condition | Unlocks |
-|---|---|---|
-| Gate 0 | Required files in `docs/ai-context/` are filled in AND a frontend stack selection ADR has been created | AI assistance starts |
-| Gate 1 | `docs/product/requirements.md` reviewer approved | Drafting use-cases.md, mock generation |
-| Gate 2 ★ | `docs/product/use-cases.md` final reviewer approval | Code generation, drafting acceptance-criteria / data-model |
-| Gate 3 | `docs/architecture/data-model.md` reviewer approved | DB implementation, creating migrations |
-| Gate 4 | TDD Red-phase test cases (Feature/Unit) reviewer approved | Implementation (Green phase) may start |
+- 判断A の前に実装に入る
+- 止まる条件に当たったのに、聞かずに進める（判断A の OK があっても）
+- 外部への投稿・ストア申請・課金設定を AI が実行する
+- `docs/original-docs/` の編集・削除・新規作成（同フォルダの `README.md` は除く）
+- 秘密情報（API キー、パスワード、トークン）をコード・ログ・チャットに出す
+- 「できた」「確認した」と、実行して確かめずに報告する
+- Git のルール（`70-git.md`）に反する操作（承認なしのコミット・push、force push、まとめすぎたコミット）
 
-> **Existing-codebase adoption**: when this harness is added to a project with existing
-> code, Gates 0-3 above are satisfied by one consolidated review instead of four separate
-> approvals — see `SETUP.md`'s Existing-Codebase Path and
-> `meta/adr/ADR-0011-existing-codebase-adoption.md`.
+## 変更のときの確認
 
-> **Difference in gate nature**: Gates 0-3 are document-approval gates passed once per project. Gate 4 is an implementation gate, repeated per feature/UC every time the TDD cycle (`/tdd`) runs.
-> **Mockup review has no gate number**: the business-side review of `docs/product/mockups/` is not an independent gate — it is treated as a precondition for Gate 2 (final approval of use-cases.md). Feedback is incorporated into use-cases.md before Gate 2 approval is granted.
-
----
-
-## User-Facing Behavior Changes Always Require Approval
-
-Independent of Gates 0-4: **any change that materially alters how the app behaves for its users must be approved by a human before it is applied** — even when the change is a bug fix, and even when the current behavior contradicts `docs/product/use-cases.md` or another specification document.
-
-A specification saying the behavior *should* be X is justification for *proposing* the change, never authorization to *apply* it. Discovering that the implementation and the spec disagree is a finding to report, not a mandate to act.
-
-Changes that require approval under this rule include:
-- Adding, removing, or reordering fields, buttons, or screens a user interacts with
-- Changing when an action succeeds vs. fails (validation rules, permission boundaries, error conditions)
-- Changing wording a user reads (error messages, labels, confirmations)
-- Changing defaults, or what data is shown or hidden to a given role
-
-What to do instead: report the finding with the concrete user-visible symptom, the cause, and the proposed fix — then wait. Do not bundle such a change into an unrelated task, and do not treat "the spec already says so" or "it's obviously a bug" as consent.
-
-Exempt (no approval needed): changes with no user-observable effect — refactors, comments, test-only changes, and documentation updates.
-
-> Applies to autonomous/background work as well. Small in-scope fixes to code written in the same session may proceed without re-asking **only** when they do not change user-facing behavior under the list above.
-
----
-
-## Absolute Prohibitions
-
-- Applying a user-facing behavior change without human approval (see the section above) — including when justified by a spec document
-- Code generation before Gate 2 is passed
-- Starting implementation (Green phase) before Gate 4 is passed (generating implementation code before test case approval)
-- Code-first approach (implementing without reviewing documentation)
-- Git operations that violate `.claude/rules/70-git.md` / `docs/development/git-workflow.md` (autonomous commit/push, force push, bulk commits)
-- Implementation without tests (always add regression tests for bug fixes)
-- Editing out-of-scope files
-- Including secrets or production credentials in prompts
-- Editing, deleting, or creating files in `docs/original-docs/` (reference only), except editing its own `README.md`
-
----
-
-## Verification Checklist for Changes
-
-- [ ] Have you checked the related ADR?
-- [ ] Does the change impact use-cases.md?
-- [ ] Was Gate 4 (test case approval) obtained before starting implementation (Green)?
-- [ ] For a change request (CR), has `docs/rcid/traceability-matrix.md` been updated (by hand, or regenerated with `/regenerate-traceability` — see that file's Maintenance section)?
-- [ ] Is there a migration plan (for DB changes)?
-- [ ] Have tests been added?
-- [ ] Has documentation been updated?
-- [ ] Before declaring this complete, did you actually run the relevant command/test in this turn rather than assert from reading code alone? (`.claude/skills/verification-before-completion/SKILL.md`, Trial — `meta/adr/ADR-0013`)
+- [ ] 関係する ADR と `docs/decisions.md` を確認したか
+- [ ] 判断A の範囲に収まっているか
+- [ ] ロジックにテストを付けたか
+- [ ] 実際に動かして確かめたか
+- [ ] ドキュメント（`PLAN.md`、Character Bible など）を更新したか

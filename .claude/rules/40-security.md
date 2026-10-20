@@ -1,86 +1,55 @@
-# 40-security.md — Security Rules
+# 40-security.md — 秘密情報と外部サービス
 
-## Secrets Management (Most Important)
+## 秘密情報（最重要）
 
-### Absolute Prohibitions
-- Hardcoding API keys or passwords in code
-- Committing, pasting in chat, or sharing `.env` actual values with AI
-- Including production credentials in AI prompts
-- Committing `secrets.*` type files to Git
+### 禁止
+- API キー・パスワード・トークンをコードに直接書く
+- `.env` の実際の値をコミットする、チャットに貼る、AI に渡す
+- `secrets.*` のようなファイルを Git にコミットする
+- 秘密情報をログ（`logs/`、生成ログを含む）に書く
 
-### Correct Management Methods
-- Secrets go in `.env` only (`.env.example` lists key names only)
-- Use a Secret Manager (e.g. AWS Secrets Manager) for production secrets
-- Use dummy values in contexts passed to AI
+### 正しい扱い
+- 秘密情報は `.env` だけに置く（`.env.example` にはキーの名前だけ書く）
+- AI に渡す文脈にはダミーの値を使う
 
-### Handling `docs/credentials/`
+### `docs/credentials/` の扱い
 
-Unlike `docs/original-docs/` (reference-only, editing prohibited), `docs/credentials/` is intended for recording credentials needed during development, and **AI is permitted to create, edit, and read it**. However, the following must always be observed:
+`docs/original-docs/`（読み取り専用）と違い、`docs/credentials/` は開発中に必要な認証情報の「置き場所の記録」のためのフォルダで、AI が作成・編集・閲覧してよい。ただし次を必ず守る。
 
-- Never output or quote actual values (production API keys, passwords, tokens, etc.) directly in chat responses, commit messages, or PR descriptions
-- Register `docs/credentials/` in `.gitignore` and never commit it (a local, development-environment-only location)
-- The actual production secrets are still managed via Secret Manager per the rules above — `docs/credentials/` only holds records of "where things are stored" or dev-only dummy values
-- If an actual production-grade value is found, do not handle it as-is — stop and confirm with the user (always pause before committing or outputting it)
+- 実際の値（API キー、パスワード、トークン）をチャット・コミットメッセージ・PR の説明に出さない
+- `docs/credentials/` は `.gitignore` に入れ、コミットしない
+- 実際の値らしきものを見つけたら、そのまま扱わず止まって Ryo に確認する
 
-## Authentication & Authorization
+## 外部サービス・お金
 
-- Authentication: use Laravel Sanctum / Passport
-- Authorization: **always use Policy / Gate** (direct role checks are prohibited)
-- Sessions: set HttpOnly + Secure cookies
-- CSRF: keep the `ValidateCsrfToken` middleware (Laravel 11+; formerly `VerifyCsrfToken`) enabled; exclude a route only when it cannot send a token (e.g. a webhook)
+- 有料のサービスを新しく使う、契約する、上限を超えそうなときは止まって聞く（`00-global.md` の止まる条件 1）
+- クラウドの画像・動画生成は月 40 ドルまで。生成ログに消費額を記録し、上限に近づいたら止めて知らせる（ADR-0001）
+- 自動チャージ（残高が減ると自動で買い足す設定）は使わない
 
-## Input Validation
+## 画像生成の環境（ADR-0001）
 
-- Always validate user input with FormRequest
-- SQL injection prevention: use Eloquent / the Query Builder; raw SQL only with parameter bindings, per the Query Policy in `.claude/rules/20-mysql.md`
-- XSS prevention: use Blade's `{{ }}` (minimize use of `{!! !!}`); in Vue, never bind user input with `v-html`
-- File uploads: validate MIME type, size, and extension
+- ComfyUI は localhost だけで待ち受ける（`--listen` で外部に公開しない）
+- カスタムノードは許可リストにあるものだけ入れ、バージョンを固定する。入れる前に配布元を確かめる
+  （カスタムノードは任意のコードを実行できる。過去に情報を盗むノードが配布された事例がある）
+- ダウンロードしたモデル・ファイルは信用できないデータとして扱い、そのフォルダの中でスクリプトを実行しない
 
-## Logging & Auditing
+## 外部への公開
 
-### Must NOT appear in logs
-- Passwords
-- API keys and tokens
-- Credit card numbers
-- Personally Identifiable Information (PII)
+- SNS への投稿、ストアへの申請、課金の設定、外部への共有は AI が行わない。Ryo が手で行う
+- 公開する素材と文面の準備までは AI が行ってよい
 
-### Should appear in logs
-- User ID (in a non-personally-identifiable form)
-- Operation type and timestamp
-- Error type and stack trace (minimal in production)
+## ログ
 
-### Audit Log Channel
+### 書いてはいけないもの
+- パスワード、API キー、トークン
+- 個人を特定できる情報
 
-Audit entries for privileged or destructive operations go to a **dedicated `audit` channel**, not the default application log. (Not to be confused with `logs/audit.jsonl` at the project root, which records AI agent activity — `docs/development/tdd-guard.md`.)
+### 書くもの
+- 操作の種類と時刻
+- 生成ログ：モデル名、seed、設定、使ったサービス、消費額（ADR-0001）
 
-- Define an `audit` channel in `config/logging.php` (`storage/logs/audit.log`, daily rotation, retention driven by a `LOG_AUDIT_DAYS` env var — add the key to `.env.example`)
-- Pin the channel's `level` to `info` **independently of `LOG_LEVEL`**, so raising the application log level in production can never silence the audit trail
-- Always write entries with this fixed minimal schema — no free-form message shapes, so the log stays machine-parsable:
+## 依存パッケージ
 
-| Field | Content |
-|---|---|
-| `action` | Operation name (e.g. `employee.deleted`) |
-| `actor_id` | ID of the acting user (ID only — never name or email) |
-| `subject_type` | Class / table name of the target record |
-| `subject_id` | ID of the target record |
-
-- Never put PII (name, email, address, etc.) or the changed values themselves into an audit entry — `subject_type` + `subject_id` is enough to identify the record
-- The actor stamp columns on the record (see `.claude/rules/10-laravel.md`) and this channel are complementary: the columns hold the latest state, the channel holds the history
-
-## Dependency Packages
-
-- Run `composer audit` regularly to check for vulnerabilities
-- Verify major updates in a test environment before merging
-- Remove unused packages
-
-## OWASP Top 10 Compliance Checklist
-
-- [ ] Injection (SQLi / XSS)
-- [ ] Broken Authentication
-- [ ] Sensitive Data Exposure
-- [ ] XXE
-- [ ] Broken Access Control
-- [ ] Security Misconfiguration
-- [ ] Insecure Deserialization
-- [ ] Using Components with Known Vulnerabilities
-- [ ] Insufficient Logging
+- 新しいライブラリ・ツールを入れるときは止まって聞く（止まる条件 3）
+- 入れたものは脆弱性チェックの道具（例：`pip-audit`、`npm audit`）で定期的に確かめる
+- 使っていないパッケージは削除する

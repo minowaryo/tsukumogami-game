@@ -1,63 +1,43 @@
-# 60-docs.md — Documentation Update Rules
+# 60-docs.md — ドキュメントの更新
 
-## Change-to-Document Mapping
+## 変更と更新するドキュメントの対応
 
-| Change | Document(s) to Update |
+| 変更 | 更新するドキュメント |
 |---|---|
-| DB schema change | `docs/architecture/data-model.md` |
-| API added / changed | `docs/architecture/overview.md` |
-| Auth / authz change | `docs/architecture/authz-authn.md` |
-| Architecture decision | `docs/adr/ADR-XXXX-xxx.md` (create new) |
-| Coding standards change | `docs/development/coding-standards.md` |
-| Test strategy change | `docs/development/testing-strategy.md` |
-| New common command | `docs/ai-context/common-commands.md` |
-| New domain / module added | `docs/ai-context/module-map.md` |
-| New term added | `docs/ai-context/glossary.md` |
-| Change to do-not-touch areas | `docs/ai-context/do-not-touch.md` |
-| UI / design spec change | `docs/product/ui-guidelines.md` |
-| Mockup added / updated | `docs/product/mockups/README.md` (update screen list) |
-| Mockup feedback incorporated into UC | `docs/product/use-cases.md` + `docs/product/mockups/README.md` |
-| Frontend screen / component added | `docs/ai-context/module-map.md` |
-| State management (store for whichever stack was selected — Pinia, Vuex, Redux, etc.) added / changed | `docs/architecture/overview.md` |
-| Frontend technology decision (library change, etc.) | `docs/adr/ADR-XXXX-xxx.md` (create new) |
-| Business policy change for permissions / roles | `docs/product/org-permission-philosophy.md` + `docs/architecture/authz-authn.md` |
-| User-facing feature / usage change | `docs/product/user-guide.md` |
-| UAT scenario / result additions (optional) | `docs/product/uat-scenarios.md` / `docs/product/uat-results/` (see the UAT section in `.claude/rules/00-global.md`; non-blocking) |
-| Resolved a library/framework-specific pitfall | `docs/ai-context/known-pitfalls.md` (not loaded every time, so it doesn't need to be in the same commit as the code change — append whenever one is resolved) |
-| New data model added (CRUD coverage) | see `.claude/rules/30-testing.md` (CRUD coverage rule) |
-| New dev/test credential or API key location noted | `docs/credentials/README.md` (never commit the actual secret) |
-| Error-handling or response-format convention change | `docs/development/coding-standards.md` |
-| Gate condition / quality-gate process changes | `.claude/rules/00-global.md` (details table, absolute prohibitions) + `SETUP.md` (Step procedures) + `AGENTS.md` (for Codex — Gate definitions are duplicated there, so all 3 files need to stay in sync) |
-| Human/AI role-division change (new adoption path, new AI capability, etc.) | `docs/development/ai-workflow.md` (Role Breakdown) + a pointer amendment on `meta/adr/ADR-0004` if it's policy-level (see its 2026-07-15 / 2026-09-15 amendment notes for the style) |
-| New AI entry point added (skill or command) | `docs/ai-context/common-commands.md` (entry-point table) + `README.md` (directory tree). Choose `.claude/skills/` vs `.claude/commands/` by the criterion in `meta/adr/ADR-0012-skills-vs-commands.md` |
-| Git workflow change (branches, commits, push, merge, pre-merge check) | `docs/development/git-workflow.md` (+ `.claude/rules/70-git.md` only for the always-on core) — other files keep at most a one-line pointer (+ an ADR if policy-level; see `meta/adr/ADR-0015`) |
+| Ryo の決定 | `docs/decisions.md` |
+| 作業の進み具合、次にやること | `PLAN.md` |
+| キャラの設定・見た目・段階・プロンプト | `docs/characters/` の該当ファイル（共通部分は `_common.yaml`） |
+| 新しい技術・ツール・サービスの採用、方針の変更 | `docs/adr/ADR-XXXX-xxx.md`（新規作成。`/adr` のテンプレート） |
+| 役割分担・判断ポイント・止まる条件の変更 | `docs/development/roles-and-decisions.md` ＋ `CLAUDE.md` ＋ `.claude/rules/00-global.md` ＋ `AGENTS.md`（4つをそろえる）＋ ADR |
+| 用語の追加 | `docs/ai-context/glossary.md` |
+| フォルダ・モジュールの追加 | `docs/ai-context/module-map.md` |
+| よく使うコマンドの追加 | `docs/ai-context/common-commands.md` |
+| プロジェクトの概要・フェーズ・技術の変化 | `docs/ai-context/project-summary.md` |
+| ライブラリ固有のつまずきを解決した | `docs/ai-context/known-pitfalls.md` |
+| Git の運用の変更 | `docs/development/git-workflow.md`（＋ 常に読み込む核の部分だけ `.claude/rules/70-git.md`） |
+| 開発用の認証情報の置き場所 | `docs/credentials/README.md`（実際の値は書かない） |
+| 原案の資料を追加した | `docs/original-docs/README.md` のファイル一覧 |
 
-## Documentation Update Principles
+## 原則
 
-1. **Update documentation in the same commit as the code change**
-2. Specification changes should be documented before coding (document-first)
-3. ADRs must always include "why this decision was made" (not just What, but Why)
-4. Keep `docs/ai-context/` short and accurate (it is the AI-facing summary layer)
+1. ドキュメントは、関係するコード・設定の変更と同じコミットで更新する
+2. 仕様の変更は、コードより先にドキュメントに書く
+3. ADR には「何を決めたか」だけでなく「なぜそう決めたか」を必ず書く
+4. `docs/ai-context/` は短く正確に保つ（AI が毎回読む要約）
+5. AI の提案は「案」と明記する。Ryo の決定と混ぜない
 
-## When to Write an ADR
+## ADR を書くとき
 
-Always create an ADR when making the following decisions:
+- 新しいライブラリ・フレームワーク・ツール・有料サービスを採用する
+- 既存のものを変える・やめる
+- 作りの方針を変える
+- セキュリティの方針を変える
+- AI 開発の方針（役割分担を含む）を変える
+- 検討した結果「今は採用しない」と決めた（`/adr` の「Not Adopted」の書き方）
 
-- Adopting a new library or framework
-- Changing or retiring an existing library
-- Changing an architectural pattern
-- Changing security policy
-- Large-scale DB schema changes
-- Changing AI development policy
+ADR は AI が下書きし、Ryo が採択する。テンプレートは `.claude/commands/adr.md`。
 
-## PLAN.md Size-Limit Rule (Archive Workflow)
+## PLAN.md の大きさ
 
-`PLAN.md` is the ongoing task ledger referenced across sessions. Appending to it without limit eventually bloats the file to the point where it becomes hard to scan. Keep it within a bounded size using the following rule.
-
-- **Limit**: keep `PLAN.md` **under 300 lines** (treat crossing 250 lines as the trigger to consider archiving)
-- **Archive destination**: `docs/history/plan-archive.md` (create it if it does not yet exist in the project). Only in the harness template repository itself (the one that contains `APPLY_TEMPLATE.md`), use `meta/history/plan-archive.md` instead — it is template-internal and never reaches projects (`APPLY_TEMPLATE.md` class X; removed in `SETUP.md`)
-- **Procedure** (what to move, how, and the "archived" note): `docs/development/plan-archiving.md`
-
-## ADR Template
-
-Use the template in `.claude/commands/adr.md` (the `/adr` command) — it is the single source, including the "Variant for Recording a Deferral (Not Adopted)" section.
+- `PLAN.md` は 300 行未満に保つ（250 行を超えたら古い部分の退避を考える）
+- 退避先は `docs/history/plan-archive.md`（なければ作る）。手順は `docs/development/plan-archiving.md`
