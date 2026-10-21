@@ -23,4 +23,20 @@
 
 ## Records
 
-(No records yet. Append entries below as pitfalls get resolved.)
+### ComfyUI 0.39.0 — 同じ設定を2回投入すると2回目が約1秒で終わり、再現性を確かめられない
+
+- Symptom: 同じワークフローを API で2回投入すると、2回目は計算せず前回の結果が返る
+- Cause: ComfyUI は入力が同じノードの結果をキャッシュして使い回す
+- Fix: 2回目の前に `POST /free` に `{"unload_models": true, "free_memory": true}` を送ってキャッシュを消す
+
+### ComfyUI 0.39.0 / NVIDIA 617.42 / MSI Pulse GL66 — モデルの読み込み中に GPU が落ちる（"GPU is lost"）
+
+- Symptom: SDXL のモデルを GPU に読み込む途中で応答が止まり、nvidia-smi が "GPU is lost. Reboot the system" を返す
+- Cause: 断定できていないが、MSI Center の User Scenario が省電力系（エコサイレント）だった可能性が高い（バランスに変えた後、計6回の生成で再発なし。最高 75℃、瞬間最大 約155W）
+- Fix: 画像生成の前に MSI Center を「バランス」以上にする。ComfyUI は `--reserve-vram 1` を付けて起動する。落ちたら PC の再起動が必要
+
+### ComfyUI 0.39.0 — 同じ seed の画像なのに PNG ファイルのハッシュが一致しない
+
+- Symptom: 絵が同じでも、保存された PNG のファイル全体の SHA-256 が毎回違う
+- Cause: PNG に生成時のワークフロー（保存名を含む）がメタデータとして埋め込まれる
+- Fix: ファイルではなく画素を比べる（Pillow で `Image.open(p).convert('RGB').tobytes()` のハッシュ）
