@@ -31,6 +31,8 @@ This directory is for primary source materials brought in by humans.
 |---|---|---|
 | `tsukumogami-game.zip` | Original archive of the Phase 0 planning docs (kept as-is) | 2026-10-19 |
 | `tsukumogami-game/` | Extracted contents of the zip above: owner handoff (`CLAUDE.md`), concept / research / production / roadmap / decisions / world / characters / marketing / market strategy (`docs/01`–`09`) | 2026-10-19 |
+| `Youtube_idea` | Handoff memo (Markdown, no extension) for a separate English YouTube channel concept: positioning, content pillars, avatar and AI voice strategy, next steps | 2026-10-24 |
+| `サングラスの柴犬、夏のアロハスタイル.png` | Shiba Inu illustration (sunglasses, aloha shirt): avatar candidate for the YouTube concept above | 2026-10-24 |
 
 ## Operation Rules
 
