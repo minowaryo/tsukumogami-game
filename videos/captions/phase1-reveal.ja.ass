@@ -1,0 +1,18 @@
+[Script Info]
+; Japanese captions for phase1-reveal. PLACEHOLDER copy — Ryo writes the final text.
+; The "Note" line is the required 試作版・AI使用 disclosure; keep it for every prototype video.
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: JA,Yu Gothic UI,64,&H00FFFFFF,&H00FFFFFF,&H00202020,&H80000000,1,0,0,0,100,100,0,0,1,4,1,2,60,60,400,1
+Style: Note,Yu Gothic UI,32,&H00FFFFFF,&H00FFFFFF,&H00202020,&H80000000,0,0,0,0,100,100,0,0,1,2,0,9,40,40,60,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:15.00,Note,,0,0,0,,試作版・AI使用 / Prototype · AI-assisted
+Dialogue: 0,0:00:01.00,0:00:09.50,JA,,0,0,0,,あなたの家の物にも、魂が宿っているかも？
+Dialogue: 0,0:00:10.50,0:00:15.00,JA,,0,0,0,,百年目の家で、目を覚ます。

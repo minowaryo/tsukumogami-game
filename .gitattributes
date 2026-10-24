@@ -5,3 +5,8 @@
 # fails on a CRLF shebang with "bad interpreter", and CRLF also breaks heredocs and
 # string comparisons inside a script.
 *.sh text eol=lf
+
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.mp4 binary

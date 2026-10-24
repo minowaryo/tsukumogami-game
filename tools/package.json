@@ -1,0 +1,16 @@
+{
+  "name": "tsukumogami-tools",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only audio generation and video assembly tooling (ADR-0004). Not shipped with the game.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "yaml": "^2.6.0"
+  }
+}

@@ -28,3 +28,13 @@ dist/
 # personal reference material, not part of the distributed template
 docs/handbook/
 docs/original-docs/*.pptx
+
+# Secrets for local tooling (key names only in .env.example)
+.env
+
+# Audio / video pipeline (docs/audio/README.md §5): only approved WAV masters are committed
+tools/node_modules/
+assets/proto/audio/takes/
+assets/proto/audio/game/
+videos/clips/
+out/

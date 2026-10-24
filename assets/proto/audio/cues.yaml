@@ -1,0 +1,75 @@
+# Audio cue registry — single source for tools/audio/*.mjs (docs/audio/README.md)
+# STATUS: DRAFT. Prompts are proposals; tune them after listening to the first takes.
+# Prompt rules: English; describe instruments/mood/tempo; never name a real artist, composer,
+# game, or title; music cues always say "no vocals". Keep each prompt on one line
+# (approve.mjs rewrites the file and would join multi-line prompts).
+# `approved` is written by tools/audio/approve.mjs — do not edit it by hand.
+
+defaults:
+  tool: elevenlabs
+  license: ElevenLabs paid plan — may ship if quality is good (ADR-0002); check terms before release (docs/audio/README.md §4)
+  output_format: mp3_44100_128
+  sfx_model: eleven_text_to_sound_v2
+  music_model: music_v2
+
+cues:
+  # 0.0-2.0 s — hook: the face appears (Lv0 -> Lv1). No music yet.
+  sfx.hook.tink:
+    kind: sfx
+    prompt: A single bright, delicate glass bell tink, very short and clean, close-up, soft natural reverb tail, quiet and magical
+    duration: 1.5
+    prompt_influence: 0.6
+    approved: null
+
+  # optional
+  sfx.breath.in:
+    kind: sfx
+    prompt: A soft, near-silent inhale, gentle and intimate, close microphone, no voice, no words
+    duration: 1.5
+    prompt_influence: 0.5
+    approved: null
+
+  # 2.0-10.0 s — the change builds (Lv1 -> Lv3)
+  # Deferred: BGM is generated in a later phase (docs/decisions.md 2026-10-24).
+  music.reveal15:
+    kind: music
+    prompt: Gentle, nostalgic instrumental underscore. A solo music box plays a simple four-note motif, repeated with slight variation; a soft felt piano joins; a faint warm string pad enters in the second half; it resolves into one sustained bittersweet chord that rings out at the end. Around 70 BPM, intimate and delicate. No drums, no percussion, no vocals.
+    duration: 13
+    approved: null
+
+  sfx.shimmer.rise:
+    kind: sfx
+    prompt: Airy magical shimmer slowly rising in pitch, soft sparkles and a gentle whoosh, warm and dreamy, no drums
+    duration: 3.5
+    prompt_influence: 0.5
+    approved: null
+
+  sfx.heartbeat.soft:
+    kind: sfx
+    prompt: Two soft, muffled heartbeats, warm and calm, low and felt rather than heard
+    duration: 2
+    prompt_influence: 0.6
+    approved: null
+
+  # optional — under the 0.3 s Lv4 glimpse
+  sfx.glimpse.swell:
+    kind: sfx
+    prompt: A very short reverse swell of soft bells and air, rising into a reveal
+    duration: 1
+    prompt_influence: 0.5
+    approved: null
+
+  # 10.0-15.0 s — reveal and hold (Lv4)
+  sfx.reveal.chime:
+    kind: sfx
+    prompt: A warm cluster of small chimes with a music box sparkle, a gentle magical reveal, soft and nostalgic, natural decay
+    duration: 2.5
+    prompt_influence: 0.6
+    approved: null
+
+  sfx.breath.wake:
+    kind: sfx
+    prompt: A soft, relaxed exhale, like someone gently waking up, intimate and close, no voice, no words
+    duration: 2
+    prompt_influence: 0.5
+    approved: null
