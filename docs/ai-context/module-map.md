@@ -18,6 +18,7 @@
 | `.claude/` | Claude Code のルール・コマンド・スキル・フック | AI（ルールの変更は ADR） |
 | `meta/template-archive/` | テンプレート由来で退避したルールと元の版。**読み込まない** | — |
 | `meta/adr/` | テンプレート自体の判断の記録（参考） | — |
+| `side-projects/youtube-channel/` | **ゲームとは別件**の YouTube チャンネル企画。中だけで完結させ、後で別リポジトリに分けられるようにする（`README.md`） | AI（判断は Ryo） |
 
 ## これから作るもの（PLAN.md より）
 
