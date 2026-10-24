@@ -20,6 +20,32 @@
 テンプレート由来の `/generate-mock`、`/generate-e2e-test`、`/onboard-existing-codebase`、`regenerate-traceability` は、
 use-cases.md や Laravel を前提にしているので、今は使わない。
 
+## 音声・動画のツール
+
+リポジトリのルートで実行する。`.env` に `ELEVENLABS_API_KEY` が要る。ffmpeg は `tools/node_modules` の
+`ffmpeg-static` を使う（システムへのインストールは不要）。詳しくは `docs/audio/README.md`。
+
+```bash
+# 最初に1回だけ
+npm --prefix tools install
+
+# 1つのキューの候補を生成する（キューは assets/proto/audio/cues.yaml に登録）
+node tools/audio/generate.mjs --cue sfx.reveal.chime --takes 4
+
+# テイクを承認する → WAV のマスター ＋ cues.yaml の approved
+node tools/audio/approve.mjs --cue sfx.reveal.chime --take <file-in-takes>
+
+# ブラウザの試作用に OGG ＋ MP3 を作る
+node tools/audio/derive.mjs
+
+# 仕様ファイルから動画を書き出す → out/phase1-reveal.mp4
+# （画面の録画を仕様の base の場所に置く。例：videos/clips/phase1-reveal.mp4）
+node tools/video/compose.mjs videos/phase1-reveal.yaml
+
+# ツールのテスト
+npm --prefix tools test
+```
+
 ## Character Bible の検証
 
 ```bash

@@ -1,0 +1,41 @@
+# Phase 1 15-second reveal video (cue sheet: docs/audio/README.md §2)
+# Render: node tools/video/compose.mjs videos/phase1-reveal.yaml  ->  out/phase1-reveal.mp4
+# Paths are relative to the repository root. Offsets (`at`, seconds) are tuned to the final visuals.
+
+name: phase1-reveal
+duration: 15
+fps: 30
+size: [1080, 1920]
+fade_out: 1.5
+
+# Screen recording of the transformation demo (git-ignored; its own audio is discarded).
+# A shorter clip is fine: the last frame is held until `duration`.
+base: videos/clips/phase1-reveal.mp4
+
+audio:
+  - cue: sfx.hook.tink
+    at: 0.3
+  # - cue: sfx.breath.in        # optional
+  #   at: 0.0
+  #   gain: 0.6
+  # BGM is deferred to a later phase (docs/decisions.md 2026-10-24); first version is SFX only.
+  # - cue: music.reveal15
+  #   at: 2.0
+  #   gain: 0.7
+  - cue: sfx.shimmer.rise
+    at: 6.0
+    gain: 0.8
+  - cue: sfx.heartbeat.soft
+    at: 7.0
+    gain: 0.8
+  # - cue: sfx.glimpse.swell    # optional, under the 0.3 s Lv4 glimpse
+  #   at: 9.4
+  - cue: sfx.reveal.chime
+    at: 10.0
+  - cue: sfx.breath.wake
+    at: 13.5
+    gain: 0.7
+
+captions:
+  - videos/captions/phase1-reveal.ja.ass
+  - videos/captions/phase1-reveal.en.ass

@@ -39,6 +39,18 @@
 | External Service | Integration Purpose | Direction |
 |---|---|---|
 | [Service name] | [Purpose] | Outbound / Inbound / Bidirectional |
+| ElevenLabs API（Music、Sound Effects） | 試作の音声の生成。開発用ツールだけが `tools/audio/` から呼ぶ（ADR-0004） | Outbound |
+
+### 音声・動画のツール（開発用。ゲームには含めない）
+
+```
+assets/proto/audio/cues.yaml ──► tools/audio/generate ──► takes/ ──(Ryo が選ぶ)───► masters/*.wav
+                                                                                       │
+                                     tools/audio/derive ◄──────────────────────────────┤
+                                       └─► game/*.ogg|mp3（ブラウザの試作）            │
+videos/*.yaml + captions/*.ass ──► tools/video/compose (ffmpeg) ◄──────────────────────┘
+                                       └─► out/*.mp4 (1080x1920, AAC)
+```
 
 ## Deployment Environments
 

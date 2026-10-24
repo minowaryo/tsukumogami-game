@@ -9,6 +9,8 @@
 - 済み：Character Bible 6体分（`docs/characters/`、案）、試作3体の決定（柱時計・提灯・ピアノ）、
   画像生成基盤の ADR（ADR-0001、Proposed）、AI 生成素材のリリース方針（ADR-0002）
 - 未着手：画像生成の環境構築、可愛さの比較テスト、変化デモページ
+- Phase 1 の準備：音声の生成と動画の組み立てのツール（ADR-0004）をブランチ `feat/audio-pipeline` で作成済み（main には未マージ）。
+  ElevenLabs のキー待ち。Phase 1 の「音声と動画の組み立て」を参照
 
 ## 進め方（2026-10-20 から）
 
@@ -137,6 +139,67 @@
 
 - [ ] クラウドの動画モデルの料金（秒単位のことが多く、画像より高い）
 - [ ] ローカルの動画モデルが VRAM 8GB で現実的な速さで動くか
+
+### 音声と動画の組み立て（ADR-0004、ブランチ `feat/audio-pipeline`）
+
+上の流れの 5（編集）のためのツール。効果音の生成と、コマンド 1 つでの動画の書き出し。
+状況：**ブランチ `feat/audio-pipeline` で作成済み、main には未マージ**。判断A は 2026-10-21 に Ryo が OK。
+残り：ElevenLabs のキー、最初の本番生成、判断B（Ryo が聞いて判断）。
+
+Ryo の決定（`docs/decisions.md`）：
+- 音楽と効果音は、どちらも ElevenLabs で生成する（API キー 1 つ）（2026-10-21）
+- 範囲は生成スクリプトと動画の組み立てスクリプトまで（ドキュメントだけではない）（2026-10-21）
+- **BGM は後のフェーズに回す。最初に生成するのは効果音だけ**（2026-10-24）
+- AI 生成の音声も、出来が良ければそのままリリースに使う（ADR-0002 にそろえる）（2026-10-24）
+
+参照：`docs/audio/README.md`、`docs/adr/ADR-0004-audio-generation-and-assembly-pipeline.md`
+
+#### Step 0 — 前提（Ryo）
+- [x] ツールの置き場所を決める → このリポジトリ、この PC（Ryo、2026-10-21）
+  - 性能は 2026-10-21 に確認済み：影響なし。生成は ElevenLabs のサーバーで行う。15 秒・1080x1920 の動画 1 本の書き出しは
+    約 5 秒、最大 約 820 MB（`-threads` で制限）。ffmpeg は `tools/node_modules` の中の npm パッケージ `ffmpeg-static`
+    （約 81 MB、libass 入り、日本語の字幕を確認済み）から使う。システムへのインストール、PATH の変更、常駐はない
+  - `03_production.md` は勤務時間外の個人 PC を勧めているが、Ryo がここで作ると確認した
+  - `winget install Gyan.FFmpeg` の代わりに `ffmpeg-static` を使う
+- [ ] ElevenLabs のアカウントを有料プランで作り、キーを `.env` の `ELEVENLABS_API_KEY` に書く
+- [ ] 動画に使うキャラを決める（上の絵コンテ案は柱時計）
+
+#### Step 1 — リポジトリの準備
+- [x] ブランチ `feat/audio-pipeline`
+- [x] `.env` と音声・動画の出力を `.gitignore` に追加、`.env.example` を追加
+- [x] `tools/package.json`（Node ESM。依存は `yaml` と `ffmpeg-static`）
+- [x] Red：`tools/test/` に単体テスト（キューの登録、ElevenLabs へのリクエスト、ffmpeg の引数）
+
+#### Step 2 — キューの登録と生成
+- [x] `assets/proto/audio/cues.yaml` にキューシートのキューを登録（`docs/audio/README.md` §2）
+- [x] `tools/audio/generate.mjs --cue <id> [--takes N]` → `takes/<cue-id>/` ＋ 付属の JSON（プロンプト、ツール、日付）
+- [x] `tools/audio/approve.mjs --cue <id> --take <file>` → WAV のマスター ＋ `cues.yaml` の `approved`
+- [x] `tools/audio/derive.mjs` → ブラウザの試作用の OGG ＋ MP3
+
+#### Step 3 — 動画の組み立て
+- [x] `videos/phase1-reveal.yaml`（元の映像、キューの位置、字幕ファイル）。BGM の行はコメントにしてある（2026-10-24）
+- [x] `videos/captions/phase1-reveal.ja.ass` / `.en.ass`（Ryo が文面を書くまでは仮の文。日本語のファイルに「試作版・AI使用」の表記）
+- [x] `tools/video/compose.mjs <spec>` → `out/<name>.mp4`（BGM ＋ ずらした効果音 ＋ 焼き込み字幕、1080x1920）
+
+#### Step 4 — 確認
+- [x] 単体テスト：30 件すべて通過（`npm --prefix tools test`）
+- [x] API キーなしでの実行（2026-10-21）：キーがない・キューが存在しない・元の映像がないときは、分かりやすいメッセージで止まる。
+      合成したサイン波のテイクで approve → derive → compose を通し、15.00 秒・1080x1920・30 fps・AAC の動画が 7.3 秒で書き出せた
+      （ffmpeg の最大 約 555 MB）。キューの位置、元の映像の音を捨てること、フェードアウト、最後のコマの静止、日英の字幕を確認し、
+      テストで作ったファイルは削除済み
+- [ ] ElevenLabs のキーで効果音を本番生成する（Step 0 の有料プランと `.env` 待ち）
+- [ ] 判断B：Ryo が聞いて判断し、プロンプトと位置を調整する
+
+#### 完了条件
+- 仕様ファイルからコマンド 1 つで 15 秒の動画が書き出せ、承認した効果音がすべて指定の位置で鳴り、日英の字幕が入っている
+- `cues.yaml` のすべてのキューに、プロンプト・ツール・ライセンス・日付・承認したテイクが記録されている
+- `docs/ai-context/common-commands.md` にコマンドが載っている
+
+#### やらないこと（後で）
+- BGM（`music.reveal15`）の生成（後のフェーズ、2026-10-24 Ryo 決定）
+- ゲーム内の BGM のループと、ブラウザの試作での再生（「タップして始める」画面）
+- 作曲家への依頼（AI 生成の出来が足りないと判断した場合。ADR-0002）
+- 毎週の開発ログ動画で流行りの音源を試すこと
 
 ---
 
