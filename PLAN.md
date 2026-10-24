@@ -3,14 +3,15 @@
 開発計画。フェーズ全体の流れは原案 `docs/original-docs/tsukumogami-game/docs/04_roadmap.md` を正とし、
 ここには「今どこまで進んでいて、次に何をするか」を書く。決定事項は Ryo が原案の `05_decisions.md` に記録する。
 
-## 現在地（2026-10-20）
+## 現在地（2026-10-24）
 
 - **Phase 0**（世界観の深掘りと、キャラで「変化の面白さ」を確かめる）の途中
 - 済み：Character Bible 6体分（`docs/characters/`、案）、試作3体の決定（柱時計・提灯・ピアノ）、
-  画像生成基盤の ADR（ADR-0001、Proposed）、AI 生成素材のリリース方針（ADR-0002）
-- 未着手：画像生成の環境構築、可愛さの比較テスト、変化デモページ
-- Phase 1 の準備：音声の生成と動画の組み立てのツール（ADR-0004）をブランチ `feat/audio-pipeline` で作成済み（main には未マージ）。
-  ElevenLabs のキー待ち。Phase 1 の「音声と動画の組み立て」を参照
+  画像生成基盤の ADR（ADR-0001、Trial）、AI 生成素材のリリース方針（ADR-0002、Accepted）、
+  ComfyUI の導入とスモークテスト（0-A の前半）
+- 未着手：可愛さの比較テスト、キャラの詰め、変化デモページ
+- Phase 1 の準備：音声の生成と動画の組み立てのツール（ADR-0004、Accepted）を `feat/audio-pipeline` で作成し、
+  2026-10-24 に main へマージ済み。残りは ElevenLabs のキー取得と本番生成・判断B。Phase 1 の「音声と動画の組み立て」を参照
 
 ## 進め方（2026-10-20 から）
 
@@ -143,8 +144,8 @@
 ### 音声と動画の組み立て（ADR-0004、ブランチ `feat/audio-pipeline`）
 
 上の流れの 5（編集）のためのツール。効果音の生成と、コマンド 1 つでの動画の書き出し。
-状況：**ブランチ `feat/audio-pipeline` で作成済み、main には未マージ**。判断A は 2026-10-21 に Ryo が OK。
-残り：ElevenLabs のキー、最初の本番生成、判断B（Ryo が聞いて判断）。
+状況：**`feat/audio-pipeline` で作成し、2026-10-24 に main へマージ済み**（ADR-0004 は Accepted）。
+判断A は 2026-10-21 に Ryo が OK。残り：ElevenLabs のキー、最初の本番生成、判断B（Ryo が聞いて判断）。
 
 Ryo の決定（`docs/decisions.md`）：
 - 音楽と効果音は、どちらも ElevenLabs で生成する（API キー 1 つ）（2026-10-21）
@@ -208,4 +209,6 @@ Ryo の決定（`docs/decisions.md`）：
 - 試作3体の Lv4 の性別
 - ハーネススクリプトの置き場所
 - ADR-0002 の判断基準・判断のタイミング（案のまま）
-- ADR-0001・ADR-0003 の採択（どちらも Proposed）
+- ADR-0001（Trial）・ADR-0003（Proposed）の採択
+
+別件の YouTube チャンネルの計画は `side-projects/youtube-channel/PLAN.md` に書く（ゲームの計画と混ぜない）。
